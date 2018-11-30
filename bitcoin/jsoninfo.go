@@ -17,3 +17,22 @@ type TransInfo struct{
 	Timereceived		int32		`json:"timereceived"`
     Bip125_replaceable  string   	`json:"bip125-replaceable"`
 }
+
+
+type WalletInfo struct{
+	Walletname			string 		`json:"walletname"`
+	Walletversio		int32		`json:"walletversion"`
+	Balance				float32		`json:"balance"`
+	Unconfirmed_balance float32		`json:"unconfirmed_balance"`
+	Immature_balance	float32		`json:"immature_balance"`
+	Txcount				int32		`json:"txcount"`
+	Keypoololdest		int32		`json:"keypoololdest"`
+	Keypoolsize			int32		`json:"keypoolsize"`
+	Keypoolsize_hd_internal int32	`json:"keypoolsize_hd_internal"`
+	Paytxfee			float32		`json:"paytxfee"`
+	Hdmasterkeyid		string		`json:"hdmasterkeyid"`
+}
+
+
+
+

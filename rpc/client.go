@@ -19,7 +19,13 @@ type JsonRpc struct {
 		Host string         //rpc主机
 		Port int           //rpc端口
 }
-  
+
+
+func NewClient(user string, password string, host string, port int) *JsonRpc {
+	c := JsonRpc{user, password, host, port}
+	return &c
+}
+
 
 //rpc认证连接，返回获取数据
 func (jrpc *JsonRpc) MakeRequest(method string, params []string)([]byte, error)  {
@@ -41,7 +47,7 @@ func (jrpc *JsonRpc) MakeRequest(method string, params []string)([]byte, error) 
 		
 		j, err := json.Marshal(args)
 		if err != nil {
-			fmt.Println(err)
+			return nil,err
 		}
 		
 		req.Body = ioutil.NopCloser(strings.NewReader(string(j)))
@@ -57,7 +63,7 @@ func (jrpc *JsonRpc) MakeRequest(method string, params []string)([]byte, error) 
 		
 
 //解析非数组格式的json
-func (c *JsonRpc) JsonParseToMapString(inDatas []byte)(map[string]interface{},error){
+func  JsonParseToMapString(inDatas []byte)(map[string]interface{},error){
 	var data map[string]interface{}
 	decoder  := json.NewDecoder(bytes.NewBuffer(inDatas))
 	decoder.UseNumber()
@@ -81,7 +87,7 @@ func (c *JsonRpc) JsonParseToMapString(inDatas []byte)(map[string]interface{},er
 
 
 //解析数组格式的json
-func (c *JsonRpc) JsonParseToArray(inDatas []byte)([]interface{},error){
+func  JsonParseToArray(inDatas []byte)([]interface{},error){
 	var data  map[string]interface{}
 	decoder  := json.NewDecoder(bytes.NewBuffer(inDatas))
 	decoder.UseNumber()
@@ -105,7 +111,4 @@ func (c *JsonRpc) JsonParseToArray(inDatas []byte)([]interface{},error){
 }
 
 
-func NewClient(user string, password string, host string, port int) *JsonRpc {
-	c := JsonRpc{user, password, host, port}
-	return &c
-}
+

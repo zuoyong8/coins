@@ -1,0 +1,41 @@
+{
+    "rpcserver":{
+        "btc":{
+            "ip":"127.0.0.1",
+            "port":8332,
+            "username":"btc",
+            "password":"xxxqeqrer"
+        },
+        "bch":{
+            "ip":"",
+            "port":8333,
+            "username":"",
+            "password":""
+        },
+        "ltc":{
+            "ip":"",
+            "port":8334,
+            "username":"",
+            "password":""
+        },
+        "usdt":{
+            "ip":"",
+            "port":8335,
+            "username":"",
+            "password":""
+        },
+        "eth":{
+            "ip":"",
+            "port":8336,
+            "username":"",
+            "password":""
+        },
+        "etc":{
+            "ip":"",
+            "port":8337,
+            "username":"",
+            "password":""
+        }
+    }
+}
+
