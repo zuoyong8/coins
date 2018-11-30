@@ -14,15 +14,16 @@ import (
   )
   
 type JsonRpc struct {
-		User string   		  //rpc用户名
-		Password string     //rpc密码
-		Host string         //rpc主机
-		Port int           //rpc端口
+	Host string         //rpc主机
+	Port int           //rpc端口
+	User string   		  //rpc用户名
+	Password string     //rpc密码
+
 }
 
 
-func NewClient(user string, password string, host string, port int) *JsonRpc {
-	c := JsonRpc{user, password, host, port}
+func New(host string, port int,user string, password string) *JsonRpc {
+	c := JsonRpc{host, port,user, password}
 	return &c
 }
 
@@ -63,7 +64,7 @@ func (jrpc *JsonRpc) MakeRequest(method string, params []string)([]byte, error) 
 		
 
 //解析非数组格式的json
-func  JsonParseToMapString(inDatas []byte)(map[string]interface{},error){
+func  JsonParse(inDatas []byte)(map[string]interface{},error){
 	var data map[string]interface{}
 	decoder  := json.NewDecoder(bytes.NewBuffer(inDatas))
 	decoder.UseNumber()

@@ -1,30 +1,19 @@
 package bitcoin
 
 import (
-	// "fmt"
-	// "../rpc"
+	"fmt"
 )
-
-// type IBitcoinChainApi interface{
-// 	ListTransactions()[]interface{}
-// 	GetWallerInfo()
-// }
 
 
 // func GetWallerInfo
-func ListTransactions()[]interface{}{
-	// c := rpc.NewClient("sjyy", "Sjyy2018", "192.168.0.185", 8334)
-	// if c == nil {
-	// 	fmt.Println("null")
-	// 	return nil
-	// }
+func ListTransactions()[]*TransInfo{
+	api := New("listtransactions",nil)
+	bytes := api.GetJosnBytes()
 
-	// params := []string{}
-	// bytes, err := c.MakeRequest("listtransactions", params)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// 	return  nil
-	// }
+	if bytes != nil {
+		fmt.Println(bytes)
+	}
+
 	return nil
 	// result ,err := c.JsonParseToArray(bytes)
 	// if err!=nil {
