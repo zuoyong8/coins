@@ -63,32 +63,8 @@ func (jrpc *JsonRpc) MakeRequest(method string, params []string)([]byte, error) 
 }
 		
 
-//解析非数组格式的json
-func  JsonParse(inDatas []byte)(map[string]interface{},error){
-	var data map[string]interface{}
-	decoder  := json.NewDecoder(bytes.NewBuffer(inDatas))
-	decoder.UseNumber()
-	err := decoder.Decode(&data)
-	if err != nil {
-		str,_ := json.Marshal(err)
-		return nil, errors.New(string(str))
-	}
-
-	if err, found := data["error"]; found && err != nil {
-		str,_ := json.Marshal(err)
-		return nil, errors.New(string(str))
-	}
-		
-	if result, found := data["result"]; found {
-		return result.(map[string]interface{}), nil
-	} else {
-		return nil, errors.New("no result")
-	}
-}
-
-
-//解析数组格式的json
-func  JsonParseToArray(inDatas []byte)([]interface{},error){
+//解析rpc方法返回的json数组
+func RpcJsonParse(inDatas []byte)([]byte,error){
 	var data  map[string]interface{}
 	decoder  := json.NewDecoder(bytes.NewBuffer(inDatas))
 	decoder.UseNumber()
@@ -104,9 +80,12 @@ func  JsonParseToArray(inDatas []byte)([]interface{},error){
 		return nil, errors.New(string(str))
 	}
 
-	result := data["result"].([]interface{})
+	result := data["result"]
 	if result != nil {
-		return result, nil
+		rbytes,err := json.Marshal(result)
+		if err == nil {
+			return rbytes, nil
+		}
 	}
 	return nil, errors.New("no result")
 }

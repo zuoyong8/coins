@@ -34,5 +34,18 @@ type WalletInfo struct{
 }
 
 
+type AddressInfo struct{
+	IsValid				bool	    `json:"isvalid"`
+	Address				string 		`json:"address"`
+	ScriptPubKey		string		`json:"scriptPubKey"`
+	IsMine				bool		`json:"ismine"`
+	IsWatchOnly			bool 		`json:"iswatchonly"`
+	IsScript			bool		`json:"isscript"`
+	IsWitness			bool 		`json:"iswitness"`
+	Account				string		`json:"account"`
+	TimeStamp			int64		`json:"timestamp"`
+}
+
+
 
 

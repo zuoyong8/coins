@@ -5,3 +5,5 @@ debug
 
 .project
 .settings
+
+*.test

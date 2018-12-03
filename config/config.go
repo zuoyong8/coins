@@ -28,10 +28,16 @@ func GetCurrRunDir() string{
 	return strings.Replace(dir,"\\","/",-1)
 }
 
+//
+func GetCurrPath() string{
+	return "d:/gits/coins/config/config.json"
+}
+
 
 //根据币种从json配置文件中获取相应rpc信息
 func GetRpcInfo(currency string) (*RpcJsonInfo, error){
-	jsonfile := GetCurrRunDir()+"/config/config.json"
+	// jsonfile := GetCurrRunDir()+"/config/config.json"
+	jsonfile := GetCurrPath()
 	filedata,err := io.ReadFile(jsonfile)
 	if err != nil{
 		return nil,err
