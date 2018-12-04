@@ -8,11 +8,11 @@ import (
 
 type CallFunc struct{
 	method 	 string
-	params	 []string
+	params	 []interface{}
 }
 
 //
-func New(method string,params []string) *CallFunc{
+func New(method string,params []interface{}) *CallFunc{
 	api := CallFunc{method,params}
 	return &api
 }

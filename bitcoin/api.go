@@ -23,7 +23,7 @@ func ListTransactions()([]TransInfo,error){
 
 //返回有关比特币地址的信息。
 func ValidateAddress(address string)(AddressInfo,error){
-	params := make([]string,1)
+	params := make([]interface{},1)
 	params[0] = address
 	callFunc := New("validateaddress",params)
 	bytes,err := callFunc.GetRpcBytes()
@@ -133,3 +133,41 @@ func GetBlockCount()(int64,error){
 	}
 	return blockCount,nil
 }
+
+
+//发送
+func SendFrom(info SendInfo)(string,error){
+	params := make([]interface{},3)
+	params[0] = info.FromAccount
+	params[1] = info.ToBitcoinAddress
+	params[2] = info.Amount
+	callFunc :=	New("sendfrom",params)
+	bytes,err := callFunc.GetRpcBytes()
+	if err!= nil{
+		return "",err
+	}
+	var txid string
+	err1 := json.Unmarshal(bytes,&txid)
+	if err1 != nil {
+		return "",err1
+	}
+	return txid,nil
+}
+
+//
+func SendToAddress(info SendInfo)(string,error){
+	params := make([]interface{},2)
+	params[0] = info.ToBitcoinAddress
+	params[1] = info.Amount
+	callFunc := New("sendtoaddress",params)
+	bytes,err := callFunc.GetRpcBytes()
+	if err != nil{
+		return "",err
+	}
+	var txid string
+	err1 := json.Unmarshal(bytes,txid)
+	if err1 != nil {
+		return "",err1
+	}
+	return txid,nil
+}	

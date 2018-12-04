@@ -29,7 +29,8 @@ func New(host string, port int,user string, password string) *JsonRpc {
 
 
 //rpc认证连接，返回获取数据
-func (jrpc *JsonRpc) MakeRequest(method string, params []string)([]byte, error)  {
+//缺失
+func (jrpc *JsonRpc) MakeRequest(method string, params []interface{})([]byte, error)  {
 		baseUrl := fmt.Sprintf("http://%s:%d", jrpc.Host, jrpc.Port)
 		client := new(http.Client)
 		req, err := http.NewRequest("POST", baseUrl, nil)
