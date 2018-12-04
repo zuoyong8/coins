@@ -30,6 +30,18 @@ func TestValidateAddress(t *testing.T){
 }
 
 
+func TestGetTransaction(t *testing.T){
+	info,err := bitcoin.GetTransaction("2e5753f438bde120eb01a7cf7656c3d055e77b30eb710e2cd11bfe9a7132750c")
+	if err!=nil{
+		t.Error(err)
+		return
+	}
+	fmt.Println(info.Hex)
+	//fmt.Println(info.tranDetailsInfo.Amount)
+}
+
+
+
 func TestListAddressGroupings(t *testing.T){
 	datas,err := bitcoin.ListAddressGroupings()
 	if err != nil{

@@ -73,6 +73,24 @@ func ListAddressGroupings()([]interface{},error){
 }
 
 
+//返回有关给定事务的对象
+func GetTransaction(txid string)(TransactionInfo,error){
+	params := make([]interface{},1)
+	params[0] = txid
+	callFunc := New("gettransaction",params)
+	var info TransactionInfo 
+	bytes,err := callFunc.GetRpcBytes()
+	if err != nil{
+		return info,nil
+	}
+	err1 := json.Unmarshal(bytes,&info)
+	if err1 != nil{
+		return info,err1
+	}
+	return info,nil
+}
+
+
 //用返回钱包的总体信息
 func GetWalletInfo()(WalletInfo,error){
 	callFunc := New("getwalletinfo",nil)
@@ -101,6 +119,21 @@ func GetNewaAddress()(string,error){
 		return "",err1
 	}
 	return newAddress,nil
+}
+
+//返回一个新的比特币地址，用于接收更改。这适用于原始交易，而非正常使用
+func GetRawChangeAddress(account string)(string,error){
+	callFunc := New("getrawchangeaddress",nil)
+	bytes,err := callFunc.GetRpcBytes()
+	if err!= nil{
+		return  "",err
+	}
+	var address string
+	err1 := json.Unmarshal(bytes,&address)
+	if err1 != nil{
+		return "",err1
+	}
+	return address,nil
 }
 
 //返回当前节点的总可用余额
@@ -165,9 +198,29 @@ func SendToAddress(info SendInfo)(string,error){
 		return "",err
 	}
 	var txid string
-	err1 := json.Unmarshal(bytes,txid)
+	err1 := json.Unmarshal(bytes,&txid)
 	if err1 != nil {
 		return "",err1
 	}
 	return txid,nil
 }	
+
+//从一个帐户移动另一个钱包帐户
+func Move(info MoveInfo)(bool,error){
+	params := make([]interface{},3)
+	params[0] = info.FromAccount
+	params[1] = info.ToAccount
+	params[2] = info.Amount
+
+	callFunc := New("move",params)
+	bytes,err := callFunc.GetRpcBytes()
+	if err != nil{
+		return false,err
+	}
+	var status bool
+	err1 := json.Unmarshal(bytes,&status)
+	if err1!=nil {
+		return false,err1
+	}
+	return status,nil
+}

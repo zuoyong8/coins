@@ -9,6 +9,14 @@ type SendInfo struct{
 	Comment_To			string
 }
 
+
+type MoveInfo struct {
+	FromAccount string
+	ToAccount   string
+	Amount		float64
+	Minconf		int64
+	Comment		string
+}
 // type SendManyInfo struct {
 // 	FromAccount 		string
 // 	AmountInfo			map[string]
