@@ -15,6 +15,23 @@ func GetAccouts()([]string,error){
 }
 
 
+func GetBalance(address string)(string,error){
+	Params := make([]interface{},1)
+	Params[0] = address
+	callFunc,err := New("eth_getBalance",Params)
+	if err != nil {
+		return "",nierrl
+	}
+	
+	var balance string
+	err = callFunc.EthClient(&balance,callFunc.Method)
+	if err != nil{
+		return "",err
+	}
+	return balance,nil
+}
+
+
 func GetGasPrice()(string,error){
 	callFunc,err := New("eth_gasPrice",nil)
 	if err != nil{
