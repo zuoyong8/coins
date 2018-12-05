@@ -180,9 +180,9 @@ func SendFrom(info SendInfo)(string,error){
 		return "",err
 	}
 	var txid string
-	err1 := json.Unmarshal(bytes,&txid)
-	if err1 != nil {
-		return "",err1
+	err = json.Unmarshal(bytes,&txid)
+	if err != nil {
+		return "",err
 	}
 	return txid,nil
 }

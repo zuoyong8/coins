@@ -29,17 +29,13 @@
     },
     {
         "currency":"eth",
-        "ip":"",
-        "port":8336,
-        "username":"",
-        "password":""
+        "ip":"47.244.54.191",
+        "port":8989
     },
     {
         "currency":"etc",
         "ip":"",
-        "port":8337,
-        "username":"",
-        "password":""
+        "port":8337
     }
 ]
 

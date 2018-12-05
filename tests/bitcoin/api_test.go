@@ -29,6 +29,14 @@ func TestValidateAddress(t *testing.T){
 	fmt.Println(datas.Address)
 }
 
+func TestGetBalance(t *testing.T){
+	balance,err := bitcoin.GetBalance()
+	if err != nil{
+
+	}
+	fmt.Println(balance)
+}
+
 
 func TestGetTransaction(t *testing.T){
 	info,err := bitcoin.GetTransaction("2e5753f438bde120eb01a7cf7656c3d055e77b30eb710e2cd11bfe9a7132750c")

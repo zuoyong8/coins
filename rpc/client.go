@@ -12,13 +12,12 @@ import (
 	"encoding/json"
 	"bytes"
   )
-  
-type JsonRpc struct {
-	Host string         //rpc主机
-	Port int           //rpc端口
-	User string   		  //rpc用户名
-	Password string     //rpc密码
 
+type JsonRpc struct {
+	Host string         	//rpc主机
+	Port int           		//rpc端口
+	User string   		 	//rpc用户名
+	Password string     	//rpc密码
 }
 
 
@@ -29,7 +28,6 @@ func New(host string, port int,user string, password string) *JsonRpc {
 
 
 //rpc认证连接，返回获取数据
-//缺失
 func (jrpc *JsonRpc) MakeRequest(method string, params []interface{})([]byte, error)  {
 		baseUrl := fmt.Sprintf("http://%s:%d", jrpc.Host, jrpc.Port)
 		client := new(http.Client)
@@ -37,12 +35,12 @@ func (jrpc *JsonRpc) MakeRequest(method string, params []interface{})([]byte, er
 		if err != nil {
 			return nil, err
 		}
-		
+
 		req.SetBasicAuth(jrpc.User, jrpc.Password)
 		req.Header.Add("Content-Type", "text/plain")
 		
 		args := make(map[string]interface{})
-		args["jsonrpc"] = "1.0"
+		args["jsonrpc"] = "2.0"
 		args["id"] = time.Now().UnixNano()
 		args["method"] = method
 		args["params"] = params

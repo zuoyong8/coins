@@ -59,7 +59,7 @@ type TransactionInfo struct{
 	Time				int32		`json:"time"`
 	TimeReceived		int32		`json:"timereceived"`
 	Bip125_replaceable  string		`json:"bip125-replaceable"`
-	details		[]interface{}		`json:"details"`
+	// details		[]interface{}		`json:"details"`
 	Hex					string 		`json:"hex"`
 }
 
