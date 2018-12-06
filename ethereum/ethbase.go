@@ -6,6 +6,12 @@ import (
 	myrpc "../rpc"
 )
 
+const (
+	Wei   = 1
+	GWei  = -9
+	Ether = -18
+)
+
 type CallFunc struct{
 	Method		string
 	Params 		[]interface{}
@@ -21,6 +27,10 @@ func New(method string,params []interface{})(*CallFunc,error){
 	if err != nil {
 		return nil,err
 	}
-	callFunc := CallFunc{method,params,client}
-	return &callFunc,nil
+	callFunc := new(CallFunc)
+	callFunc.Method = method
+	callFunc.Params = params
+	callFunc.EthClient = client
+	// callFunc := CallFunc{method,params,client}
+	return callFunc,nil
 }

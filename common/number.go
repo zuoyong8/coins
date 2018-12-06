@@ -9,7 +9,9 @@ import (
 
 //十六转进制十进制
 func HexDec(h string) (n int64) {
-	h = h[2:]
+	if h[:2]=="0x"{
+		h = h[2:] 
+	}
 	s := strings.Split(strings.ToUpper(h), "")
 	l := len(s)
 	i := 0
