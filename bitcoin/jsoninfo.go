@@ -35,15 +35,31 @@ type WalletInfo struct{
 
 
 type AddressInfo struct{
-	IsValid				bool	    `json:"isvalid"`
+	IsValid				bool	    `json:"isvalid"`  //地址是否有效
 	Address				string 		`json:"address"`
 	ScriptPubKey		string		`json:"scriptPubKey"`
-	IsMine				bool		`json:"ismine"`
+	IsMine				bool		`json:"ismine"`   //地址是否为本节点地址
 	IsWatchOnly			bool 		`json:"iswatchonly"`
 	IsScript			bool		`json:"isscript"`
 	IsWitness			bool 		`json:"iswitness"`
+	Script				string 		`json:"script"`
+	EmbeddedInfo		AddressEmbeddedInfo `json:"embedded"`
 	Account				string		`json:"account"`
 	TimeStamp			int64		`json:"timestamp"`
+	Addresses			[]string	`json:"addresses"`
+	Hdkeypath			string		`json:"hdkeypath"`
+	Hdmasterkeyid		string 		`json:"hdmasterkeyid"`
+}
+
+
+type AddressEmbeddedInfo struct {
+	IsScript		bool 		`json:"isscript"`
+	IsWitness		bool		`json:"iswitness"`
+	Witness_Version int32		`json:"witness_version"`
+	Witness_Program string		`json:"witness_program"`
+	PubKey			string		`json:"pubkey"`
+	Address			string 		`json:"address"`
+	ScriptPubKey	string		`json:"scriptPubKey"`
 }
 
 
@@ -59,7 +75,7 @@ type TransactionInfo struct{
 	Time				int32		`json:"time"`
 	TimeReceived		int32		`json:"timereceived"`
 	Bip125_replaceable  string		`json:"bip125-replaceable"`
-	// details		[]interface{}		`json:"details"`
+	Details		[]TransactionDetailsInfo	`json:"details"`
 	Hex					string 		`json:"hex"`
 }
 

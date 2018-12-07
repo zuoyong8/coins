@@ -9,6 +9,12 @@ type SendInfo struct{
 	Comment_To			string
 }
 
+type SendManyInfo struct {
+	FromAccount string
+	SendsInfo 	map[string]interface{}
+	Minconf		int32
+	Comment		string
+}
 
 type MoveInfo struct {
 	FromAccount string
@@ -17,7 +23,3 @@ type MoveInfo struct {
 	Minconf		int64
 	Comment		string
 }
-// type SendManyInfo struct {
-// 	FromAccount 		string
-// 	AmountInfo			map[string]
-// }

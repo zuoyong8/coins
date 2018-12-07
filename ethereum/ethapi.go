@@ -135,3 +135,10 @@ func GetBlockNumber()(string,error){
 	return blockNumber,nil
 }
 
+//发送
+// func SendTransaction(fromAddress string, toAddress string, ether float64 )(txid string ,error){
+// 	Params 
+
+
+// }
+

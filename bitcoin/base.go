@@ -20,7 +20,13 @@ func New(method string,params []interface{}) *CallFunc{
 
 //
 func (cf *CallFunc) GetJosnBytes()([]byte){
-	btcRpc,err := config.GetRpcInfo("btc")
+	var coinName string
+	if (cf.method[:5]=="omni_"){
+		coinName = "usdt"
+	}else{
+		coinName = "btc"
+	}
+	btcRpc,err := config.GetRpcInfo(coinName)
 	if err!=nil {
 		return nil
 	}

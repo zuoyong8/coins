@@ -5,10 +5,11 @@ package main
 import (
 	"fmt"
 	"./ethereum"
-	// // "./bitcoin"
+	"./bitcoin"
 	// "reflect"
 	//  "math"
 	 "./common"
+	//  "./usdt"
 )
 
 // type MyTest struct{
@@ -28,8 +29,17 @@ func main(){
 	// c[1] = "from"
 	// out1 := COut(c,"cccc")
 	// fmt.Println(out1.Out[0],out1.Out[1])
-
-
+	info,err := bitcoin.ValidateAddress("25EeN6fSpo8MrcUjERQmvpjdQfGkn8yND2")
+	if err == nil{
+		fmt.Println(info.ScriptPubKey)
+	}
+	// info,err := bitcoin.GetTransaction("2e5753f438bde120eb01a7cf7656c3d055e77b30eb710e2cd11bfe9a7132750c")
+	// if err==nil{
+	// 	for i:=range info.Details {
+	// 		fmt.Println(info.Details[i].Amount)
+	// 	}
+	// 	fmt.Println(info.Fee)
+	// }
 	status,err := ethereum.GetSyning()
 	if (status && err==nil){
 		datas,err := ethereum.GetHaveBalanceWithAddress()
