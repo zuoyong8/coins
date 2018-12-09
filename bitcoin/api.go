@@ -150,6 +150,31 @@ func GetBalance()(float64,error){
 }
 
 
+//根据哈哈希返回块相关信息
+func GetBlock(hash string){
+	params := make([]interface{},1)
+	params[0] = hash
+	callFunc := New("getblock",params)
+	myBytes,err := callFunc.GetRpcBytes()
+	if err != nil{
+
+	}
+	if myBytes!=nil{}
+}
+
+//
+func GetBlocHash(index int32){
+	params := make([]interface{},1)
+	params[0] = index
+	callFunc := New("getblockhash",params)
+	myBytes,err := callFunc.GetRpcBytes()
+	if (err!=nil){
+
+	}
+	if myBytes!=nil{}
+}
+
+
 //返回最长块链中的块数。
 func GetBlockCount()(int64,error){
 	callFunc := New("getblockcount",nil)

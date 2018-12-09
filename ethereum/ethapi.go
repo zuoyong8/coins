@@ -1,7 +1,7 @@
 package ethereum
 
 import (
-	"../common"
+	"coins/common"
 )
 
 //获取当前钱包内所有地址
@@ -120,6 +120,7 @@ func GetSyning()(bool,error){
 	}
 	return status,nil
 }
+
 
 //获取当前节点同步的最新区块高度
 func GetBlockNumber()(string,error){

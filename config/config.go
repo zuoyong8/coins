@@ -30,7 +30,7 @@ func GetCurrRunDir() string{
 
 //
 func GetCurrPath() string{
-	return "d:/gits/coins/config/config.json"
+	return "D:/Codes/go/src/coins/config/config.json"
 }
 
 

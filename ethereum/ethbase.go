@@ -2,8 +2,8 @@ package ethereum
 
 import (
 	"github.com/ethereum/go-ethereum/rpc"
-	"../config"
-	myrpc "../rpc"
+	"coins/config"
+	myrpc "coins/rpc"
 )
 
 const (
