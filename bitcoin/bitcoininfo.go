@@ -23,3 +23,19 @@ type MoveInfo struct {
 	Minconf		int64
 	Comment		string
 }
+
+type UnspentInfo struct{
+	Minconf		int32
+	Maxconf 	int32
+	Address     []string
+}
+
+type MyTransactionInfo struct {
+	Txid		string
+	Vout		int32
+}
+
+type RawTransactionInfo struct {
+	TransactionInfo []MyTransactionInfo
+	AmountInfo 		map[string]interface{}
+}

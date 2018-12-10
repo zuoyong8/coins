@@ -2,7 +2,7 @@ package usdt
 
 import (
 	"encoding/json"
-	"coins/bitcoin"
+	"../bitcoin"
 )
 
 //返回整个钱包的总令牌余额列表

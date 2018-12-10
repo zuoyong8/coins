@@ -5,7 +5,7 @@ package main
 import (
 	"fmt"
 	"./ethereum"
-	// "coins/bitcoin"
+	"./bitcoin"
 	// "reflect"
 	//  "math"
 	 "./common"
@@ -40,18 +40,65 @@ func main(){
 	// 	}
 	// 	fmt.Println(info.Fee)
 	// }
-	c := make(chan string,2)
-	c <- "helloworld"
-	c <- "maymay"
-	// c <- -199
-	close(c)
-	fmt.Printf("%s\n",<-c)
+	// c := make(chan string,2)
+	// c <- "helloworld"
+	// c <- "maymay"
+	// // c <- -199
+	// close(c)
+	// fmt.Printf("%s\n",<-c)
 	// fmt.Printf("%d\n",<-c)
 	// fmt.Printf("%d\n",<-c)
 	// fmt.Printf("%d\n",<-c)
 
 	// c <- 1
 
+	// rtInfo := new (bitcoin.RawTransactionInfo)
+	// rtInfo.TransactionInfo = &MyTransactionInfo{Txid:"3e05b2204b86b67618f2143cd9295106b69957614a4c4a30e51cd896651c7ffa",
+	// 							Vout:425}
+	// rtInfo.AmountInfo = {"3DzSVk4veMCkNbNT9CdETeE26uWxmNbBnD":0.00000888}
+
+	result,err := bitcoin.ValidateAddress("1P9U3cDzmuR5duJToaWbomyr2ckhvF4tqT")
+	if err==nil
+	{
+		fmt.Println(result)
+	}
+	uInfo := new(bitcoin.UnspentInfo)
+	uInfo.Minconf = 0
+	uInfo.Maxconf = 10
+	uInfo.Address = []string{"3DzSVk4veMCkNbNT9CdETeE26uWxmNbBnD"}
+	usInfo,err := bitcoin.ListUnspent(uInfo)
+	if err == nil{
+		fmt.Println(usInfo[0].Amount)
+	}
+
+	sbinfo,err := bitcoin.ListSinceBlock("","")
+	if err == nil{
+		fmt.Println(sbinfo.TranInfo[0].Address)
+	}
+	miningInfo,err := bitcoin.GetMiningInfo()
+	if err == nil{
+		fmt.Println(miningInfo.Networkhashps)
+	}
+	bestBlockHash,err := bitcoin.GetBestBlockHash()
+	if  err==nil{
+		fmt.Println(bestBlockHash)
+	}
+	accountAddress,err := bitcoin.GetAccountAddress("")
+	if err ==nil{
+		fmt.Println(accountAddress)
+	}
+
+	connectCount := bitcoin.GetConnectionCount()
+	fmt.Println(connectCount)
+
+	bInfo,err := bitcoin.GetBlock(bestBlockHash)
+	if err==nil{
+		fmt.Printf("%d\n",bInfo.Height)
+	}
+	blockHash,err := bitcoin.GetBlocHash(bInfo.Height)
+	if err==nil{
+		fmt.Println(blockHash)
+	}
 	status,err := ethereum.GetSyning()
 	if (status && err==nil){
 		datas,err := ethereum.GetHaveBalanceWithAddress()

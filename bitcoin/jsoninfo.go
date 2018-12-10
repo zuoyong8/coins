@@ -92,3 +92,58 @@ type TransactionDetailsInfo struct{
 	Abandoned			bool		`json:"abandoned"`
 }
 
+
+type BlockInfo struct {
+	Hash				string 			`json:"hash"`
+	Confirmations		int64			`json:"confirmations"`
+	Strippedsize		int64			`json:"strippedsize"`
+	Size				int64			`json:"size"`		
+	Weight				int64			`json:"weight"`
+	Height				int64			`json:"height"`
+	Version				int64			`json:"version"`
+	VersionHex			string			`json:"versionHex"`
+	Merkleroot			string			`json:"merkleroot"`
+	Tx					[]string		`json:"tx"`
+	Time				int64			`json:"time"`
+	Mediantime			int64			`json:"mediantime"`
+	Nonce				int64			`json:"nonce"`
+	Bits				string			`json:"bits"`
+	Difficulty			float64			`json:"difficulty"`
+	Chainwork			string			`json:"chainwork"`
+	NTx					int64			`json:"nTx"`
+	Previousblockhash	string			`json:"previousblockhash"`
+	Nextblockhash		string			`json:"nextblockhash"`
+}
+
+
+type MiningInfo struct{
+	Blocks				int64			`json:"blocks"`
+	CurrentBlockWeight	int64			`json:"currentblockweight"`
+	CurrentBlockTx		int64			`json:"currentblocktx"`
+	Difficulty			float64			`json:"difficulty"`
+	Networkhashps		interface{}		`json:"networkhashps"`
+	Pooledtx			int64			`json:"pooledtx"`
+	Chain				string			`json:"chain"`
+	Warnings			string 			`json:"warnings"`
+}
+
+
+type SinceBlockInfo struct{
+	TranInfo 			[]TransInfo			`json:"transactions"`
+	Removed				[]interface{}		`json:"removed"`
+	LastBlock			string 				`json:"lastblock"`
+}
+
+
+type UnSpentInfo struct{
+	Txid				string				`json:"txid"`
+	Vout				int32				`json:"vout"`
+	Address				string				`json:"address"`
+	Account				string				`json:"account"`
+	ScriptPubKey		string				`json:"scriptPubKey"`
+	Amount				float64				`json:"amount"`
+	Confirmations		int32				`json:"confirmations"`
+	Spendable			bool				`json:"spendable"`
+	Solvable			bool				`json:"solvable"`
+	Safe				bool				`json:"safe"`
+}
