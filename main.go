@@ -6,8 +6,7 @@ import (
 	"fmt"
 	"./ethereum"
 	"./bitcoin"
-	// "reflect"
-	//  "math"
+	"github.com/gin-gonic/gin"
 	 "./common"
 	//  "./usdt"
 )
@@ -57,11 +56,63 @@ func main(){
 	// 							Vout:425}
 	// rtInfo.AmountInfo = {"3DzSVk4veMCkNbNT9CdETeE26uWxmNbBnD":0.00000888}
 
-	result,err := bitcoin.ValidateAddress("1P9U3cDzmuR5duJToaWbomyr2ckhvF4tqT")
-	if err==nil
-	{
-		fmt.Println(result)
-	}
+	// result,err := bitcoin.ValidateAddress("1P9U3cDzmuR5duJToaWbomyr2ckhvF4tqT")
+	// if err==nil
+	// {
+	// 	fmt.Println(result)
+	// }
+	router := gin.Default()
+
+	// This handler will match /user/john but will not match /user/ or /user
+	router.GET("/bitcoin/validateaddress/:address", func(c *gin.Context) {
+		address := c.Param("address")
+		validInfo,err := bitcoin.ValidateAddress(address)
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"address": validInfo.Address,
+				"isvalid": validInfo.IsValid,
+				"ismine":  validInfo.IsMine,
+				"timestamp": validInfo.TimeStamp,
+			})
+		}
+	})
+	router.GET("/bitcoin/getbalance", func(c *gin.Context) {
+		balance,err := bitcoin.GetBalance()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"balance": balance,
+			})
+		}
+	})
+
+	router.GET("/bitcoin/getnewaddress", func(c *gin.Context) {
+		newAddress,err := bitcoin.GetNewaAddress()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"newaddress": newAddress,
+			})
+		}
+	})
+	router.Run(":8080")
+
 	uInfo := new(bitcoin.UnspentInfo)
 	uInfo.Minconf = 0
 	uInfo.Maxconf = 10
