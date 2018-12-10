@@ -2,8 +2,8 @@ package bitcoin
 
 import (
 	"errors"
-	"coins/rpc"
-	"coins/config"
+	"../rpc"
+	"../config"
 )
 
 type CallFunc struct{

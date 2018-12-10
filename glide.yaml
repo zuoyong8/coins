@@ -1,0 +1,10 @@
+package: .
+import:
+- package: coins/bitcoin
+- package: coins/common
+- package: coins/config
+- package: coins/ethereum
+- package: coins/rpc
+- package: github.com/ethereum/go-ethereum
+  subpackages:
+  - rpc

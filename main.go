@@ -4,11 +4,11 @@ package main
 
 import (
 	"fmt"
-	"coins/ethereum"
+	"./ethereum"
 	// "coins/bitcoin"
 	// "reflect"
 	//  "math"
-	 "coins/common"
+	 "./common"
 	//  "./usdt"
 )
 

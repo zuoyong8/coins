@@ -1,7 +1,7 @@
 package ethereum
 
 import (
-	"coins/common"
+	"../common"
 )
 
 type BalanceInfo struct{
