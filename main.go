@@ -1,66 +1,16 @@
-
 package main
 
-
 import (
-	"fmt"
+	"strconv"
 	"./ethereum"
 	"./bitcoin"
 	"github.com/gin-gonic/gin"
 	 "./common"
-	//  "./usdt"
+	 "./usdt"
 )
 
-// type MyTest struct{
-// 	Out []interface{}
-// 	A 	string
-// }
-
-// func COut(myout []interface{},mya string)*MyTest{
-// 	t := MyTest{myout,mya}
-// 	return &t
-// }
-
-
 func main(){
-	// c := make([]interface{},2)
-	// c[0] = "send"
-	// c[1] = "from"
-	// out1 := COut(c,"cccc")
-	// fmt.Println(out1.Out[0],out1.Out[1])
-	// info,err := bitcoin.ValidateAddress("25EeN6fSpo8MrcUjERQmvpjdQfGkn8yND2")
-	// if err == nil{
-	// 	fmt.Println(info.ScriptPubKey)
-	// }
-	// info,err := bitcoin.GetTransaction("2e5753f438bde120eb01a7cf7656c3d055e77b30eb710e2cd11bfe9a7132750c")
-	// if err==nil{
-	// 	for i:=range info.Details {
-	// 		fmt.Println(info.Details[i].Amount)
-	// 	}
-	// 	fmt.Println(info.Fee)
-	// }
-	// c := make(chan string,2)
-	// c <- "helloworld"
-	// c <- "maymay"
-	// // c <- -199
-	// close(c)
-	// fmt.Printf("%s\n",<-c)
-	// fmt.Printf("%d\n",<-c)
-	// fmt.Printf("%d\n",<-c)
-	// fmt.Printf("%d\n",<-c)
-
-	// c <- 1
-
-	// rtInfo := new (bitcoin.RawTransactionInfo)
-	// rtInfo.TransactionInfo = &MyTransactionInfo{Txid:"3e05b2204b86b67618f2143cd9295106b69957614a4c4a30e51cd896651c7ffa",
-	// 							Vout:425}
-	// rtInfo.AmountInfo = {"3DzSVk4veMCkNbNT9CdETeE26uWxmNbBnD":0.00000888}
-
-	// result,err := bitcoin.ValidateAddress("1P9U3cDzmuR5duJToaWbomyr2ckhvF4tqT")
-	// if err==nil
-	// {
-	// 	fmt.Println(result)
-	// }
+	
 	router := gin.Default()
 
 	// This handler will match /user/john but will not match /user/ or /user
@@ -111,88 +61,177 @@ func main(){
 			})
 		}
 	})
+	router.GET("/bitcoin/getblockcount", func(c *gin.Context) {
+		blockCount,err := bitcoin.GetBlockCount()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"blockcount": blockCount,
+			})
+		}
+	})
+	router.GET("/bitcoin/listaccounts", func(c *gin.Context) {
+		accounts,err := bitcoin.ListAccounts()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"blockcount": accounts,
+			})
+		}
+	})
+	router.GET("/bitcoin/listtransactions", func(c *gin.Context) {
+		transactions,err := bitcoin.ListTransactions()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"transactions": transactions,
+			})
+		}
+	})
+	router.GET("/bitcoin/listaddressgroupings", func(c *gin.Context) {
+		addressGroupings,err := bitcoin.ListAddressGroupings()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"addressGroupings": addressGroupings,
+			})
+		}
+	})
+	router.GET("/bitcoin/gettransaction/:txid", func(c *gin.Context) {
+		txid := c.Param("txid")
+		transaction,err := bitcoin.GetTransaction(txid)
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"transaction": transaction,
+			})
+		}
+	})
+	router.GET("/ethereum/gethavebalancewithaddress", func(c *gin.Context) {
+		balances,err := ethereum.GetHaveBalanceWithAddress()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"balances": balances,
+			})
+		}
+	})
+	router.GET("/ethereum/getgasprice", func(c *gin.Context) {
+		gasPrice,err := ethereum.GetGasPrice()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"gasprice": common.HexDec(gasPrice),
+			})
+		}
+	})
+	router.GET("/usdt/getwalletaddressbalances", func(c *gin.Context) {
+		balances,err := usdt.GetWalletaddressBalances()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"balances": balances,
+			})
+		}
+	})
+	router.GET("/usdt/listtransactions/:address", func(c *gin.Context) {
+		address := c.Param("address")
+		transactions,err := usdt.ListTransactions(address)
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"transactions": transactions,
+			})
+		}
+	})
+	router.GET("/usdt/getinfo", func(c *gin.Context) {
+		nodeInfo,err := usdt.Getinfo()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"nodeinfo": nodeInfo,
+			})
+		}
+	})
+	router.GET("/usdt/gettransaction/:txid", func(c *gin.Context) {
+		txid := c.Param("txid")
+		transaction,err := usdt.GetTransaction(txid)
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"nodeinfo": transaction,
+			})
+		}
+	})
+	router.GET("/usdt/listblocktransactions/:index", func(c *gin.Context) {
+		index,err := strconv.Atoi(c.Param("index"))
+		blockTransaction,err := usdt.ListBlockTransactions(index)
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"blocktransaction": blockTransaction,
+			})
+		}
+	})
 	router.Run(":8080")
-
-	uInfo := new(bitcoin.UnspentInfo)
-	uInfo.Minconf = 0
-	uInfo.Maxconf = 10
-	uInfo.Address = []string{"3DzSVk4veMCkNbNT9CdETeE26uWxmNbBnD"}
-	usInfo,err := bitcoin.ListUnspent(uInfo)
-	if err == nil{
-		fmt.Println(usInfo[0].Amount)
-	}
-
-	sbinfo,err := bitcoin.ListSinceBlock("","")
-	if err == nil{
-		fmt.Println(sbinfo.TranInfo[0].Address)
-	}
-	miningInfo,err := bitcoin.GetMiningInfo()
-	if err == nil{
-		fmt.Println(miningInfo.Networkhashps)
-	}
-	bestBlockHash,err := bitcoin.GetBestBlockHash()
-	if  err==nil{
-		fmt.Println(bestBlockHash)
-	}
-	accountAddress,err := bitcoin.GetAccountAddress("")
-	if err ==nil{
-		fmt.Println(accountAddress)
-	}
-
-	connectCount := bitcoin.GetConnectionCount()
-	fmt.Println(connectCount)
-
-	bInfo,err := bitcoin.GetBlock(bestBlockHash)
-	if err==nil{
-		fmt.Printf("%d\n",bInfo.Height)
-	}
-	blockHash,err := bitcoin.GetBlocHash(bInfo.Height)
-	if err==nil{
-		fmt.Println(blockHash)
-	}
-	status,err := ethereum.GetSyning()
-	if (status && err==nil){
-		datas,err := ethereum.GetHaveBalanceWithAddress()
-		if err!= nil {
-			fmt.Println(err)
-			return
-		}
-		for i := range datas {
-			fmt.Println("address:",datas[i].Address)
-			fmt.Println("balance:",datas[i].Balance)
-		}
-	}else{
-		amount ,err := ethereum.GetBalanceAmount()
-		if err == nil{
-			fmt.Println(amount)
-		}
-
-		blockNumber,err := ethereum.GetBlockNumber()
-		if err==nil{
-			fmt.Println("blockNumber",common.HexDec(blockNumber))
-		}
-
-		balance,err := ethereum.GetBalance("0x83a2533a81ee4ee55e219b0fab5016e723d12a42")
-		if err == nil {
-			fmt.Println("balance:",balance)
-		}
-
-		estimateGas,err := ethereum.GetEstimateGas("0x83a2533a81ee4ee55e219b0fab5016e723d12a42","0x0d5e7f601ee93b15b52288ed793da494cd759d30")
-		if err == nil{
-			fmt.Println("estimateGas",common.HexDec(estimateGas))
-		}
-	}
-	
-	// gasPrice,err := ethereum.GetGasPrice()
-	// if err!= nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Println(common.HexDec(gasPrice))
-
-	// blockNumber,err := ethereum.GetBlockNumber()
-	// if err!= nil {
-	// 	fmt.Println(err)
-	// }
-	// fmt.Println(common.HexDec(blockNumber))
-
 }

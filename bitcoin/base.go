@@ -4,6 +4,7 @@ import (
 	"errors"
 	"../rpc"
 	"../config"
+	"strings"
 )
 
 type CallFunc struct{
@@ -18,10 +19,9 @@ func New(method string,params []interface{}) *CallFunc{
 }
 
 
-//
 func (cf *CallFunc) GetJosnBytes()([]byte){
-	var coinName string
-	if (cf.method[:5]=="omni_"){
+	coinName := cf.method[:3]
+	if (strings.Compare(coinName,"omn")==0){
 		coinName = "usdt"
 	}else{
 		coinName = "btc"
