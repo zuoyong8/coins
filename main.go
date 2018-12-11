@@ -146,6 +146,21 @@ func main(){
 			})
 		}
 	})
+	router.GET("/ethereum/gettransactioncount/:address", func(c *gin.Context) {
+		address := c.Param("address")
+		result,err := ethereum.GetTransactionCount(address)
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"result": common.HexDec(result),
+			})
+		}
+	})
 	router.GET("/ethereum/getgasprice", func(c *gin.Context) {
 		gasPrice,err := ethereum.GetGasPrice()
 		if err!=nil{
@@ -157,6 +172,36 @@ func main(){
 			c.JSON(200, gin.H{
 				"status":  "success",
 				"gasprice": common.HexDec(gasPrice),
+			})
+		}
+	})
+	router.GET("/ethereum/getblockbyhash/:hash", func(c *gin.Context) {
+		hash := c.Param("hash")
+		result,err := ethereum.GetBlockByHash(hash)
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"result":result,
+			})
+		}
+	})
+	router.GET("/ethereum/gettransactionbyhash/:hash", func(c *gin.Context) {
+		hash := c.Param("hash")
+		result,err := ethereum.GetTransactionByHash(hash)
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"result":result,
 			})
 		}
 	})

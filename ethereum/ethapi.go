@@ -136,6 +136,56 @@ func GetBlockNumber()(string,error){
 	return blockNumber,nil
 }
 
+//返回指定地址发生的交易数量
+func GetTransactionCount(data string)(string,error){
+	Params := make([]interface{},2)
+	Params[0] = data
+	Params[1] = "latest"
+	callFunc,err := New("eth_getTransactionCount",Params)
+	if err != nil {
+		return "",err
+	}
+	
+	var result string
+	err = callFunc.EthClient.Call(&result,callFunc.Method,Params[0],Params[1])
+	if err != nil{
+		return "",err
+	}
+	return result,nil
+}
+
+//返回具有指定哈希的块
+func GetBlockByHash(dataHash string)(BlockByHashInfo,error){
+	Params := make([]interface{},2)
+	Params[0] = dataHash
+	Params[1] = true
+	callFunc,err := New("eth_getBlockByHash",Params)
+	var info BlockByHashInfo
+	if err != nil {
+		return info,err
+	}
+	err = callFunc.EthClient.Call(&info,callFunc.Method,Params[0],Params[1])
+	if err != nil{
+		return info,err
+	}
+	return info,nil
+}
+
+//返回指定哈希对应的交易
+func GetTransactionByHash(dataHash string)(TransactionByHashInfo,error){
+	Params := make([]interface{},1)
+	Params[0] = dataHash
+	callFunc,err := New("eth_getTransactionByHash",Params)
+	var tranInfo TransactionByHashInfo
+	if err != nil {
+		return tranInfo,err
+	}
+	err = callFunc.EthClient.Call(&tranInfo,callFunc.Method,Params[0])
+	if err != nil{
+		return tranInfo,err
+	}
+	return tranInfo,nil
+}
 //发送
 // func SendTransaction(fromAddress string, toAddress string, ether float64 )(txid string ,error){
 // 	Params 
