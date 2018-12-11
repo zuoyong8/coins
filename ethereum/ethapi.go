@@ -186,6 +186,38 @@ func GetTransactionByHash(dataHash string)(TransactionByHashInfo,error){
 	}
 	return tranInfo,nil
 }
+
+
+//在节点中创建一个过滤器，以便当新块生成时进行通知
+func NewBlockFilter()(string,error){
+	callFunc,err := New("eth_newBlockFilter",nil)
+	if err != nil {
+		return "",err
+	}
+	var filterCode string
+	err = callFunc.EthClient.Call(&filterCode,callFunc.Method)
+	if err != nil{
+		return "",err
+	}
+	return filterCode,nil
+}
+
+//轮询指定的过滤器，并返回自上次轮询之后新生成的日志数组
+func GetFilterChanges(filterCode string)([]FilterChangeInfo,error){
+	Params := make([]interface{},1)
+	Params[0] = filterCode
+	callFunc,err := New("eth_getFilterChanges",Params)
+	var filterInfo []FilterChangeInfo
+	if err != nil {
+		return nil,err
+	}
+	err = callFunc.EthClient.Call(&filterInfo,callFunc.Method,Params[0])
+	if err != nil{
+		return nil,err
+	}
+	return filterInfo,nil
+}
+
 //发送
 // func SendTransaction(fromAddress string, toAddress string, ether float64 )(txid string ,error){
 // 	Params 

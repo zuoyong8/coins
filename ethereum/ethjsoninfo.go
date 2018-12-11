@@ -41,3 +41,14 @@ type TransactionByHashInfo struct {
 	GasPrice			string 		`json:"gasPrice"`
 	Input				string 		`json:"input"`
 }
+
+type FilterChangeInfo struct{
+	LogIndex			string		`json:"logIndex"`
+	BlockNumber			string		`json:"blockNumber"`
+	BlockHash			string		`json:"blockHash"`
+	TransactionHash		string		`json:"transactionHash"`
+	TransactionIndex	string		`json:"transactionIndex"`
+	Address				string		`json:"address"`
+	Data				string		`json:"data"`
+	Topics				[]string	`json:"topics"`
+}

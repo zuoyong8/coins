@@ -175,6 +175,35 @@ func main(){
 			})
 		}
 	})
+	router.GET("/ethereum/newblockfilter", func(c *gin.Context) {
+		filterCode,err := ethereum.NewBlockFilter()
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"filtercode": filterCode,
+			})
+		}
+	})
+	router.GET("/ethereum/getfilterchanges/:filtercode", func(c *gin.Context) {
+		filterCode := c.Param("filtercode")
+		result,err := ethereum.GetFilterChanges(filterCode)
+		if err!=nil{
+			c.JSON(500, gin.H{
+				"status":  "failure",
+				"err": err,
+			})
+		}else{
+			c.JSON(200, gin.H{
+				"status":  "success",
+				"result": result,
+			})
+		}
+	})
 	router.GET("/ethereum/getblockbyhash/:hash", func(c *gin.Context) {
 		hash := c.Param("hash")
 		result,err := ethereum.GetBlockByHash(hash)
@@ -278,5 +307,11 @@ func main(){
 			})
 		}
 	})
-	router.Run(":8080")
+	result,err := ethereum.GetFilterChanges("0xedb9e72fb09baa2bce8a7408b70a832b")
+	if err == nil{
+		sss := result[0].BlockNumber
+		if len(sss)>0{
+
+		}
+	}
 }
