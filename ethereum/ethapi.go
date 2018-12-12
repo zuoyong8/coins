@@ -203,25 +203,30 @@ func NewBlockFilter()(string,error){
 }
 
 //轮询指定的过滤器，并返回自上次轮询之后新生成的日志数组
-func GetFilterChanges(filterCode string)([]FilterChangeInfo,error){
+//1、对于使用eth_newBlockFilter返回创建的过滤器是块哈希
+//2、对于使用eth_newPendingTransactionFilter 返回创建的过滤器是事务哈希
+//3、对于使用eth_newFilter日志创建的过滤器
+func GetFilterChanges(filterType FilterType,filterCode string)([]interface{},error){
 	Params := make([]interface{},1)
 	Params[0] = filterCode
 	callFunc,err := New("eth_getFilterChanges",Params)
-	var filterInfo []FilterChangeInfo
 	if err != nil {
 		return nil,err
 	}
-	err = callFunc.EthClient.Call(&filterInfo,callFunc.Method,Params[0])
-	if err != nil{
-		return nil,err
+	switch filterType {
+		case BlockFilter:
+			var result []interface{}
+			err = callFunc.EthClient.Call(&result,callFunc.Method,Params[0])
+			if err != nil{
+				return  nil,err
+			}
+			return result,nil
 	}
-	return filterInfo,nil
+	return nil,nil
 }
 
 //发送
 // func SendTransaction(fromAddress string, toAddress string, ether float64 )(txid string ,error){
 // 	Params 
-
-
 // }
 

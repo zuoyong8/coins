@@ -1,10 +1,10 @@
 package: .
 import:
-- package: coins/bitcoin
-- package: coins/common
-- package: coins/config
-- package: coins/ethereum
-- package: coins/rpc
+- package: github.com/appleboy/gin-jwt
+  version: v2.5.0
 - package: github.com/ethereum/go-ethereum
+  version: "2"
   subpackages:
   - rpc
+- package: github.com/gin-gonic/gin
+  version: v1.3.0

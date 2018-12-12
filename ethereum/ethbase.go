@@ -6,11 +6,20 @@ import (
 	myrpc "../rpc"
 )
 
+	// 
+type FilterType int
+const(
+	BlockFilter FilterType = iota
+	PendingTransactionFilter 
+	NewFilte
+)
+
 const (
 	Wei   = 1
 	GWei  = -9
 	Ether = -18
 )
+
 
 type CallFunc struct{
 	Method		string

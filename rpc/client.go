@@ -29,36 +29,36 @@ func New(host string, port int,user string, password string) *JsonRpc {
 
 //rpc认证连接，返回获取数据
 func (jrpc *JsonRpc) MakeRequest(method string, params []interface{})([]byte, error)  {
-		baseUrl := fmt.Sprintf("http://%s:%d", jrpc.Host, jrpc.Port)
-		client := new(http.Client)
-		req, err := http.NewRequest("POST", baseUrl, nil)
-		if err != nil {
-			return nil, err
-		}
+	baseUrl := fmt.Sprintf("http://%s:%d", jrpc.Host, jrpc.Port)
+	client := new(http.Client)
+	req, err := http.NewRequest("POST", baseUrl, nil)
+	if err != nil {
+		return nil, err
+	}
 
-		req.SetBasicAuth(jrpc.User, jrpc.Password)
-		req.Header.Add("Content-Type", "text/plain")
+	req.SetBasicAuth(jrpc.User, jrpc.Password)
+	req.Header.Add("Content-Type", "text/plain")
 		
-		args := make(map[string]interface{})
-		args["jsonrpc"] = "2.0"
-		args["id"] = time.Now().UnixNano()
-		args["method"] = method
-		args["params"] = params
+	args := make(map[string]interface{})
+	args["jsonrpc"] = "2.0"
+	args["id"] = time.Now().UnixNano()
+	args["method"] = method
+	args["params"] = params
 		
-		j, err := json.Marshal(args)
-		if err != nil {
-			return nil,err
-		}
+	j, err := json.Marshal(args)
+	if err != nil {
+		return nil,err
+	}
 		
-		req.Body = ioutil.NopCloser(strings.NewReader(string(j)))
-		req.ContentLength = int64(len(string(j)))
-		resp, err := client.Do(req)
-		if err != nil {
-			return nil, err
-		}
+	req.Body = ioutil.NopCloser(strings.NewReader(string(j)))
+	req.ContentLength = int64(len(string(j)))
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
 		
-		defer resp.Body.Close()
-		return ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
+	return ioutil.ReadAll(resp.Body)
 }
 		
 
