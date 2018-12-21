@@ -49,7 +49,6 @@ func TestGetTransaction(t *testing.T){
 }
 
 
-
 func TestListAddressGroupings(t *testing.T){
 	datas,err := bitcoin.ListAddressGroupings()
 	if err != nil{
