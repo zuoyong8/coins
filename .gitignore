@@ -8,4 +8,4 @@ debug
 
 *.test
 
-./config/config.json
+/config/config.json
