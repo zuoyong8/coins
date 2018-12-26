@@ -3,9 +3,8 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/cihub/seelog"
-	
-	"github.com/zuoyong8/coins"
 
+	"github.com/zuoyong8/coins"
 )
 
 
