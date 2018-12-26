@@ -7,3 +7,5 @@ debug
 .settings
 
 *.test
+
+./config/config.json
