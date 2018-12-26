@@ -1,8 +1,9 @@
 package tests
 
 import (
+	"github.com/zuoyong8/coins"
+	
 	"testing"
-	"../../models"
 	"fmt"
 	// "../../common"
 )

@@ -1,7 +1,7 @@
 package ethereum
 
 import (
-	"../common"
+	"github.com/zuoyong8/coins"
 )
 
 //获取当前钱包内所有地址

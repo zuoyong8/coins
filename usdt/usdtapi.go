@@ -1,8 +1,9 @@
 package usdt
 
 import (
+	"github.com/zuoyong8/coins"
+	
 	"encoding/json"
-	"../bitcoin"
 	"strings"
 )
 

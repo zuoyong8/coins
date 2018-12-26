@@ -4,8 +4,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/cihub/seelog"
 	
-	"./models"
-	"./controllers"
+	"github.com/zuoyong8/coins"
+
 )
 
 
