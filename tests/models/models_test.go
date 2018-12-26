@@ -1,7 +1,7 @@
 package tests
 
 import (
-	"github.com/zuoyong8/coins"
+	"github.com/zuoyong8/coins/models"
 	
 	"testing"
 	"fmt"

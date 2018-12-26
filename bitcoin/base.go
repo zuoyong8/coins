@@ -2,8 +2,10 @@ package bitcoin
 
 import (
 	"errors"
-	"github.com/zuoyong8/coins"
 	"strings"
+
+	"github.com/zuoyong8/coins/rpc"
+	"github.com/zuoyong8/coins/config"
 )
 
 type CallFunc struct{
