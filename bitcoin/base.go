@@ -2,8 +2,7 @@ package bitcoin
 
 import (
 	"errors"
-	"../rpc"
-	"../config"
+	"github.com/zuoyong8/coins"
 	"strings"
 )
 

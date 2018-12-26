@@ -3,7 +3,7 @@ package controllers
 import(
 	"github.com/gin-gonic/gin"
 
-	"../bitcoin"
+	"github.com/zuoyong8/coins"
 )
 
 //

@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"github.com/gin-gonic/gin"
 
-	"../usdt"
+	"github.com/zuoyong8/coins"
 )
 
 func GetWalletaddressBalances(c *gin.Context){

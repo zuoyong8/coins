@@ -4,8 +4,7 @@ import(
 	"strconv"
 	"github.com/gin-gonic/gin"
 
-	"../ethereum"
-	"../common"
+	"github.com/zuoyong8/coins"
 )
 
 

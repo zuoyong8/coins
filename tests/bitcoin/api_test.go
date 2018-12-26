@@ -3,7 +3,7 @@ package tests
 import (
 	"testing"
 	"fmt"
-	"../../bitcoin"
+	"github.com/zuoyong8/coins"
 	// "reflect"
 )
 
