@@ -26,7 +26,7 @@ type Coins struct{
 type Users struct{
 	Base
 	Username		string		`gorm:"unique_index"`
-	Pwdsalt		string
+	Pwdsalt		    string
 	Password		string
 	CreatAt			time.Time
 }

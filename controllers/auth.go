@@ -22,7 +22,7 @@ type login struct {
 func JwtAuth(username string,pwd string )(*jwt.GinJWTMiddleware, error){
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
 		Realm:       "chains_api",
-		Key:         []byte("secret key"),
+		Key:         []byte("blockchain11668"),
 		Timeout:     time.Hour,
 		MaxRefresh:  time.Hour,
 		IdentityKey: identityKey,
