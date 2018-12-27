@@ -33,8 +33,8 @@ func GetTransactionCount(c *gin.Context){
 		})
 	}else{
 		c.JSON(200, gin.H{
-			"status":  "success",
-			"result": common.HexDec(result),
+			"status": "success",
+			"result": result,
 		})
 	}
 }
