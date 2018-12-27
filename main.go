@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/cihub/seelog"
 
@@ -17,6 +19,15 @@ func main(){
 		return
 	}
 	defer db.Close()
+	key,result := models.GetPhraseAndSecret("coin168@",6)
+	pwd := fmt.Sprintf("%x",result)
+	user := models.Users{
+		Username: "coins",
+		Pwdsalt:  key,
+		Password: string(pwd),
+		CreatAt: time.Now(),
+	}
+	user.Insert()
 
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()

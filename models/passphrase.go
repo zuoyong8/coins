@@ -7,16 +7,18 @@ import (
     "crypto/cipher"
     "crypto/rand"
     "io"
-    "errors"
+	"errors"
+	"time"
 )
 
 
 func GetPhraseAndSecret(pwd string,count int)(string, []byte){
-	phrases := []string{"repository","contents","information","below","accompanied","changes","submitting","leveldb","contributing","building","limitations","documentation","proof","supported","lighter","custom","fully","equivalent","network","reconfigure","instance","developers","around","creating","contracts","almost","certainly","involved","until","entire","towards","full","catch","hold","hope","city","software","big","buf","prime","parse","black","manager","computer","runner","terminal","edit","selection","view"}
+	phrases := []string{"encodings","character","different","database","multiple","atomically","iterator","readrandom","repository","contents","information","below","accompanied","changes","submitting","leveldb","contributing","building","limitations","documentation","proof","supported","lighter","custom","fully","equivalent","network","reconfigure","instance","developers","around","creating","contracts","almost","certainly","involved","until","entire","towards","full","catch","hold","hope","city","software","big","buf","prime","parse","black","manager","computer","runner","terminal","edit","selection","view"}
 	var key string
 	p_len := len(phrases)
+	rad := math_rand.New(math_rand.NewSource(time.Now().Unix()))
 	for i:=0;i<count;i++{
-		j := math_rand.Intn(p_len)
+		j := rad.Intn(p_len)
 		key = phrases[j]+" " + key
     }
     key += "a very private public secret key for me"

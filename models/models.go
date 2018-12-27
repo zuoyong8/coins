@@ -39,8 +39,9 @@ func InitDB() (*gorm.DB,error) {
 	db, err := gorm.Open("mysql", "root:123456@/test?charset=utf8")
 	if err == nil {
 		DB = db
-		//db.LogMode(true)
+		db.LogMode(true)
 		DB.AutoMigrate(&Coins{})
+		DB.AutoMigrate(&Users{})
 		return db, err
 	}
 	return db,err
