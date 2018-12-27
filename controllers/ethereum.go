@@ -5,7 +5,6 @@ import(
 	"github.com/gin-gonic/gin"
 
 	"github.com/zuoyong8/coins/ethereum"
-	"github.com/zuoyong8/coins/common"
 )
 
 
@@ -50,7 +49,7 @@ func GetGasPrice(c *gin.Context){
 	}else{
 		c.JSON(200, gin.H{
 			"status":  "success",
-			"gasprice": common.HexDec(gasPrice),
+			"gasprice": gasPrice,
 		})
 	}
 }

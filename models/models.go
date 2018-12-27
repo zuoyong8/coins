@@ -23,17 +23,43 @@ type Coins struct{
 	Txid			string		`gorm:"unique_index"`
 }
 
+type Users struct{
+	Base
+	Username		string		`gorm:"unique_index"`
+	Pwdsalt		string
+	Password		string
+	CreatAt			time.Time
+}
+
+
 var DB *gorm.DB
 
 func InitDB() (*gorm.DB,error) {
-	db, err := gorm.Open("mysql", "root:123456@/test?charset=utf8")
+	db, err := gorm.Open("mysql", "root:123456@/test?charset=utf8&parseTime=True&loc=Local")
 	if err == nil {
 		DB = db
-		//db.LogMode(true)
+		db.LogMode(true)
 		DB.AutoMigrate(&Coins{})
+		DB.AutoMigrate(&Users{})
 		return db, err
 	}
 	return db,err
+}
+
+
+//Users CRUD
+func (users *Users) Insert() error{
+	return DB.Create(users).Error
+}
+
+func (users *Users) Delete() error {
+	return DB.Delete(users).Error
+}
+
+func GetUserByUsername(username string)(*Users,error){
+	var users Users
+	err := DB.First(&users, "username = ?", username).Error
+	return &users, err
 }
 
 //Coins CRUD
@@ -41,18 +67,15 @@ func (coins *Coins) Insert() error {
 	return DB.Create(coins).Error
 }
 
-
 func (coins *Coins) Update() error {
 	return DB.Model(coins).Updates(map[string]interface{}{
 		"currency":        coins.Currency,
 	}).Error
 }
 
-
 func (coins *Coins) Delete() error {
 	return DB.Delete(coins).Error
 }
-
 
 func GetCoinsByTxid(txid string)(*Coins,error){
 	var coins Coins
@@ -60,14 +83,12 @@ func GetCoinsByTxid(txid string)(*Coins,error){
 	return &coins, err
 }
 
-
 func GetCoinsByCurrency(currency string)([]*Coins,error){
 	var coins []*Coins
 	var err error
 	err = DB.Where("currency=?",currency).Find(&coins).Error
 	return coins,err
 }
-
 
 func Count() int {
 	var count int
