@@ -10,10 +10,6 @@ import (
 )
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 6b337ae... 修改相关依赖
 func main(){
 	db, err := models.InitDB()
 	if err != nil {

@@ -23,7 +23,7 @@ type Coins struct{
 	Txid			string		`gorm:"unique_index"`
 }
 
-<<<<<<< HEAD
+
 type Users struct{
 	Base
 	Username		string		`gorm:"unique_index"`
@@ -33,8 +33,6 @@ type Users struct{
 }
 
 
-=======
->>>>>>> parent of 6b337ae... 修改相关依赖
 var DB *gorm.DB
 
 func InitDB() (*gorm.DB,error) {
@@ -47,6 +45,23 @@ func InitDB() (*gorm.DB,error) {
 	}
 	return db,err
 }
+
+
+//Users CRUD
+func (user *Users) Insert() error {
+	return DB.Create(user).Error
+}
+
+func (user *Users) Delete() error {
+	return DB.Delete(user).Error
+}
+
+func GetUsersByUsername(username string)(*Users,error){
+	var user Users
+	err := DB.First(&user, "username = ?", username).Error
+	return &user, err
+}
+
 
 //Coins CRUD
 func (coins *Coins) Insert() error {
