@@ -2,6 +2,7 @@ package ethereum
 
 import (
 	"github.com/ethereum/go-ethereum/rpc"
+
 	"github.com/zuoyong8/coins/config"
 	myrpc "github.com/zuoyong8/coins/rpc"
 )

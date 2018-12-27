@@ -75,17 +75,17 @@ func GetBalance(address string)(string,error){
 }
 
 //获取gas价格
-func GetGasPrice()(int64,error){
+func GetGasPrice()(string,error){
 	callFunc,err := New("eth_gasPrice",nil)
 	if err != nil{
-		return 0,err
+		return "",err
 	}
 	var gasPrice string
 	err = callFunc.EthClient.Call(&gasPrice,callFunc.Method)
 	if err!=nil{
-		return 0,err
+		return "",err
 	}
-	return common.HexDec(gasPrice),nil
+	return gasPrice,nil
 }
 
 
@@ -137,21 +137,21 @@ func GetBlockNumber()(string,error){
 }
 
 //返回指定地址发生的交易数量
-func GetTransactionCount(data string)(int64,error){
+func GetTransactionCount(data string)(string,error){
 	Params := make([]interface{},2)
 	Params[0] = data
 	Params[1] = "latest"
 	callFunc,err := New("eth_getTransactionCount",Params)
 	if err != nil {
-		return 0,err
+		return "",err
 	}
 	
 	var result string
 	err = callFunc.EthClient.Call(&result,callFunc.Method,Params[0],Params[1])
 	if err != nil{
-		return 0,err
+		return "",err
 	}
-	return common.HexDec(result),nil
+	return result,nil
 }
 
 //返回具有指定哈希的块

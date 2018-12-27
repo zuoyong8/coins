@@ -19,7 +19,7 @@ type login struct {
 }
 
 
-func JwtAuth(username string,pwd string )(*jwt.GinJWTMiddleware, error){
+func JwtAuth()(*jwt.GinJWTMiddleware, error){
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
 		Realm:       "chains_api",
 		Key:         []byte("blockchain11668"),
@@ -48,9 +48,9 @@ func JwtAuth(username string,pwd string )(*jwt.GinJWTMiddleware, error){
 
 			userID := 1
 			userName := loginVals.Username
-			passWord := loginVals.Password
+			password := loginVals.Password
 
-			if (userName == username && passWord == pwd) {
+			if (userName == "admin" && password == "admin123@") {
 				return &User{
 					UserId:    userID,
 					UserName:  userName,
