@@ -136,3 +136,20 @@ func GetTransaction(c *gin.Context){
 		})
 	}
 }
+
+
+func DumpPrivkey(c *gin.Context){
+	address := c.Param("address")
+	privekey,err := bitcoin.DumpPrivkey(address)
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status":  "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status":  "success",
+			"transaction": privekey,
+		})
+	}
+}

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"time"
+	// "time"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/cihub/seelog"
+	log "github.com/cihub/seelog"
 
 	"github.com/zuoyong8/coins/models"
 	"github.com/zuoyong8/coins/controllers"
@@ -13,21 +13,36 @@ import (
 
 
 func main(){
+	defer log.Flush()
+	logger, err := log.LoggerFromConfigAsFile("log/config.xml")  
+    if err != nil{  
+        fmt.Println("parse config.xml error")  
+	} 
+	log.ReplaceLogger(logger)
 	db, err := models.InitDB()
 	if err != nil {
-		seelog.Critical("err open databases", err)
+		log.Error(err)
 		return
 	}
 	defer db.Close()
-	key,result := models.GetPhraseAndSecret("coin168@",6)
-	pwd := fmt.Sprintf("%x",result)
-	user := models.Users{
-		Username: "coins",
-		Pwdsalt:  key,
-		Password: string(pwd),
-		CreatAt: time.Now(),
+	// key,result := models.GetPhraseAndSecret("admin123",6)
+	// user := models.Users{
+	// 	Username: "admin",
+	// 	Pwdsalt:  key,
+	// 	Password: result,
+	// 	CreatAt: time.Now(),
+	// }
+	// user.Insert()
+	user,err := models.GetUsersByUsername("admin")
+	if err == nil{
+		// fmt.Println(user.Pwdsalt)
+		log.Info("username:"+user.Username)
+		//b := base64.StdEncoding.EncodeToString([]byte(user.Password))
+		pwd,err := models.GetRealPwd(user.Pwdsalt,user.Password)
+		if err == nil{
+			log.Info("password:"+string(pwd))
+		}
 	}
-	user.Insert()
 
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
@@ -42,22 +57,26 @@ func main(){
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
 	{
-	    auth.GET("/bitcoin/validateaddress/:address", controllers.ValidateAddress)
+		//bitcoin
+		auth.GET("/bitcoin/validateaddress/:address", controllers.ValidateAddress)
 	    auth.GET("/bitcoin/getbalance", controllers.GetBalance)
 	    auth.GET("/bitcoin/getnewaddress", controllers.GetNewAddress)
 	    auth.GET("/bitcoin/getblockcount",controllers.GetBlockCount) 
 	    auth.GET("/bitcoin/listaccounts", controllers.ListAccounts)
 	    auth.GET("/bitcoin/listtransactions",controllers.ListTransactions) 
 	    auth.GET("/bitcoin/listaddressgroupings", controllers.ListAddressGroupings)
-	    auth.GET("/bitcoin/gettransaction/:txid", controllers.GetTransaction)
-	    auth.GET("/ethereum/gethavebalancewithaddress", controllers.GetHaveBalanceWithAddress)
+		auth.GET("/bitcoin/gettransaction/:txid", controllers.GetTransaction)
+		auth.GET("/bitcoin/dumpprivkey/:address", controllers.DumpPrivkey)
+		//ethereum
+		auth.GET("/ethereum/gethavebalancewithaddress", controllers.GetHaveBalanceWithAddress)
 	    auth.GET("/ethereum/gettransactioncount/:address", controllers.GetTransactionCount)
 	    auth.GET("/ethereum/getgasprice", controllers.GetGasPrice)
 	    auth.GET("/ethereum/newblockfilter",controllers.NewBlockFilter)
 	    auth.GET("/ethereum/getfilterchanges", controllers.GetFilterChanges)
 	    auth.GET("/ethereum/getblockbyhash/:hash", controllers.GetBlockByHash)
 	    auth.GET("/ethereum/gettransactionbyhash/:hash", controllers.GetTransactionByHash)
-	    auth.GET("/usdt/getwalletaddressbalances", controllers.GetWalletaddressBalances)
+		//usdt
+		auth.GET("/usdt/getwalletaddressbalances", controllers.GetWalletaddressBalances)
 	    auth.GET("/usdt/listtransactions/:address",controllers.UsdtListTransactions)
 		auth.GET("/usdt/getinfo", controllers.Getinfo)
 		auth.GET("/usdt/gettransaction/:txid", controllers.UsdtGetTransaction)

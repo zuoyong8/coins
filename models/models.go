@@ -36,7 +36,7 @@ type Users struct{
 var DB *gorm.DB
 
 func InitDB() (*gorm.DB,error) {
-	db, err := gorm.Open("mysql", "root:123456@/test?charset=utf8")
+	db, err := gorm.Open("mysql", "root:123456@/test?charset=utf8&parseTime=True&loc=Local")
 	if err == nil {
 		DB = db
 		db.LogMode(true)

@@ -388,6 +388,35 @@ func Stop()string{
 	return message
 }
 
+//从地址导出私钥
+//比特币私钥以5，L,  K 开头，长度为52位
+//比特币字母表：123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz 
+func DumpPrivkey(address string)(string,error){
+	params := make([]interface{},1)
+	params[0] = address
+	callFunc := New("dumpprivkey",params)
+	myBytes,err := callFunc.GetRpcBytes()
+	if err != nil{
+		return "",err
+	}
+	var privateKey string
+	err = json.Unmarshal(myBytes,&privateKey)
+	if err != nil {
+		return "",err
+	}
+	return privateKey,nil
+}
+
+//将所有钱包私钥导出到文件
+func DumpWallet(filename string){
+	params := make([]interface{},1)
+	params[0] = filename
+	callFunc := New("dumpwallet",params)
+	myBytes,err := callFunc.GetRpcBytes()
+	if err == nil && myBytes!=nil{
+	}
+}
+
 
 ////////----UTXO-------//////////
 /////////////////////////////////

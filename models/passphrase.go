@@ -3,6 +3,7 @@ package models
 import (
 	math_rand "math/rand"
     "encoding/base64"
+    "encoding/hex"
     "crypto/aes"
     "crypto/cipher"
     "crypto/rand"
@@ -12,7 +13,7 @@ import (
 )
 
 
-func GetPhraseAndSecret(pwd string,count int)(string, []byte){
+func GetPhraseAndSecret(pwd string,count int)(string, string){
 	phrases := []string{"encodings","character","different","database","multiple","atomically","iterator","readrandom","repository","contents","information","below","accompanied","changes","submitting","leveldb","contributing","building","limitations","documentation","proof","supported","lighter","custom","fully","equivalent","network","reconfigure","instance","developers","around","creating","contracts","almost","certainly","involved","until","entire","towards","full","catch","hold","hope","city","software","big","buf","prime","parse","black","manager","computer","runner","terminal","edit","selection","view"}
 	var key string
 	p_len := len(phrases)
@@ -25,9 +26,19 @@ func GetPhraseAndSecret(pwd string,count int)(string, []byte){
     key = key[:32]
     result,err := Encrypt([]byte(key),[]byte(pwd))
     if err == nil{
-        return key,result
+        return key,hex.EncodeToString(result)
     }
-	return "",nil
+	return "",""
+}
+
+
+func GetRealPwd(key string ,pwd string)(string,error){
+    newPwd,err := hex.DecodeString(pwd)
+    if err == nil{
+        result,err1:=Decrypt([]byte(key),newPwd)
+        return string(result),err1
+    }
+    return "",nil
 }
 
 
