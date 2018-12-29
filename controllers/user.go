@@ -8,8 +8,8 @@ import (
 
 
 func Register(c *gin.Context){
-	username := c.Param("username")
-	pwd := c.Param("pwd")
+	username := c.PostForm("username")
+	pwd := c.PostForm("pwd")
 
 	key,result := models.GetPhraseAndSecret(pwd,6)
 	user := models.Users{

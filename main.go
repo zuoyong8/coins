@@ -1,7 +1,6 @@
 package main
 
 import (
-	"time"
 	"github.com/gin-gonic/gin"
 	log "github.com/cihub/seelog"
 
@@ -25,17 +24,16 @@ func main(){
 	}
 	defer db.Close()
 
-
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-	
+	router.POST("/user/register",controllers.Register)
+
 	authMiddleware,err := controllers.JwtAuth()
 	if err != nil {
 		log.Error(err)
 		return
 	}
-	router.POST("/register",controller.Register)
-    router.POST("/login", authMiddleware.LoginHandler)
+    router.POST("/user/login", authMiddleware.LoginHandler)
 
 	auth := router.Group("/api")
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
