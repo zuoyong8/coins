@@ -33,16 +33,6 @@ func main(){
 	// 	CreatAt: time.Now(),
 	// }
 	// user.Insert()
-	user,err := models.GetUsersByUsername("admin")
-	if err == nil{
-		// fmt.Println(user.Pwdsalt)
-		log.Info("username:"+user.Username)
-		//b := base64.StdEncoding.EncodeToString([]byte(user.Password))
-		pwd,err := models.GetRealPwd(user.Pwdsalt,user.Password)
-		if err == nil{
-			log.Info("password:"+string(pwd))
-		}
-	}
 
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()

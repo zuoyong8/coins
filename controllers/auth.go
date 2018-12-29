@@ -5,11 +5,12 @@ import (
 
 	"github.com/appleboy/gin-jwt"
 	"github.com/gin-gonic/gin"
+	"github.com/zuoyong8/coins/models"
 )
 
 var identityKey = "id"
 type User struct {
-	UserId    int
+	UserId    uint
 	UserName  string
 }
 
@@ -45,16 +46,17 @@ func JwtAuth()(*jwt.GinJWTMiddleware, error){
 			if err := c.ShouldBind(&loginVals); err != nil {
 				return "", jwt.ErrMissingLoginValues
 			}
-
-			userID := 1
-			userName := loginVals.Username
-			password := loginVals.Password
-
-			if (userName == "admin" && password == "admin123@") {
-				return &User{
-					UserId:    userID,
-					UserName:  userName,
-				}, nil
+			user,err := models.GetUsersByUsername(loginVals.Username)
+			if err == nil {
+				pwd,err := models.GetRealPwd(user.Pwdsalt,user.Password)
+				if err == nil{
+					if (loginVals.Username == user.Username  && loginVals.Password == pwd) {
+						return &User{
+							UserId:    user.Id,
+							UserName:  user.Username,
+						}, nil
+					}
+				}
 			}
 			return nil, jwt.ErrFailedAuthentication
 		},
