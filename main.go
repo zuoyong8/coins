@@ -1,6 +1,7 @@
 package main
 
 import (
+	"time"
 	"github.com/gin-gonic/gin"
 	log "github.com/cihub/seelog"
 
@@ -23,14 +24,7 @@ func main(){
 		return
 	}
 	defer db.Close()
-	// key,result := models.GetPhraseAndSecret("admin123",6)
-	// user := models.Users{
-	// 	Username: "admin",
-	// 	Pwdsalt:  key,
-	// 	Password: result,
-	// 	CreatAt: time.Now(),
-	// }
-	// user.Insert()
+
 
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
@@ -40,6 +34,7 @@ func main(){
 		log.Error(err)
 		return
 	}
+	router.POST("/register",controller.Register)
     router.POST("/login", authMiddleware.LoginHandler)
 
 	auth := router.Group("/api")
