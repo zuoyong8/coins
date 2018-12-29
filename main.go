@@ -1,8 +1,6 @@
 package main
 
 import (
-	// "time"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	log "github.com/cihub/seelog"
 
@@ -16,7 +14,7 @@ func main(){
 	defer log.Flush()
 	logger, err := log.LoggerFromConfigAsFile("log/config.xml")  
     if err != nil{  
-        fmt.Println("parse config.xml error")  
+        log.Error("parse config.xml error")  
 	} 
 	log.ReplaceLogger(logger)
 	db, err := models.InitDB()
@@ -39,7 +37,8 @@ func main(){
 	
 	authMiddleware,err := controllers.JwtAuth()
 	if err != nil {
-		// log.Fatal("JWT Error:" + err.Error())
+		log.Error(err)
+		return
 	}
     router.POST("/login", authMiddleware.LoginHandler)
 
