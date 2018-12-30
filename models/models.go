@@ -4,8 +4,9 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-	"github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/asaskevich/govalidator"
+	_ "github.com/go-sql-driver/mysql" 
+	// "github.com/jinzhu/gorm/dialects/mysql"
+	// "github.com/asaskevich/govalidator"
 )
 
 type Base struct{

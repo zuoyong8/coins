@@ -1,3 +1,5 @@
 2018-12-28 14:22:48  main.go[40][INF]:  username:coins
 2018-12-29 09:44:13  main.go[41][INF]:  username:admin
 2018-12-29 09:44:13  main.go[43][INF]:  password:admin123
+2018-12-30 17:24:21  main.go[23][ERR]:  sql: unknown driver "mysql" (forgotten import?)
+2018-12-30 17:24:39  main.go[23][ERR]:  sql: unknown driver "mysql" (forgotten import?)
