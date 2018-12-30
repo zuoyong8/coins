@@ -8,6 +8,7 @@ import (
 	// "bytes"
 	"errors"
 	io "io/ioutil"
+	"github.com/spf13/viper"
 )
 
 type RpcJsonInfo struct{
@@ -26,6 +27,18 @@ func GetCurrRunDir() string{
 		return ""
 	} 
 	return strings.Replace(dir,"\\","/",-1)
+}
+
+func GetCoinRpc(currency string)(*RpcJsonInfo, error){
+	v := viper.New()
+	v.SetConfigFile("coins.config")
+	// viper.SetConfigType("json")
+	v.AddConfigPath("D:/gits/coins/config/")
+	err := v.ReadInConfig()
+	if err != nil{
+		return nil,err
+	}
+	return nil,nil
 }
 
 //

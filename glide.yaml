@@ -1,10 +1,28 @@
-package: .
+package: github.com/zuoyong8/coins
 import:
+- package: github.com/RichardKnop/machinery
+  version: ^1.5.4
+  subpackages:
+  - v1
 - package: github.com/appleboy/gin-jwt
-  version: v2.5.0
+  version: ^2.5.0
+- package: github.com/asaskevich/govalidator
+  version: ^9.0.0
+- package: github.com/cihub/seelog
+  version: ^2.6.0
 - package: github.com/ethereum/go-ethereum
-  version: "2"
+  version: ^2.0.0
   subpackages:
   - rpc
 - package: github.com/gin-gonic/gin
-  version: v1.3.0
+  version: ^1.3.0
+- package: github.com/gomodule/redigo
+  version: ^2.0.0
+  subpackages:
+  - redis
+- package: github.com/jinzhu/gorm
+  version: ^1.9.2
+  subpackages:
+  - dialects/mysql
+- package: github.com/spf13/viper
+  version: ^1.3.1
