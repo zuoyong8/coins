@@ -27,7 +27,7 @@ func (cf *CallFunc) GetJosnBytes()([]byte){
 	}else{
 		coinName = "btc"
 	}
-	btcRpc,err := config.GetRpcInfo(coinName)
+	btcRpc,err := config.GetCoinRpc(coinName)
 	if err!=nil {
 		return nil
 	}

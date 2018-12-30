@@ -2,9 +2,10 @@ package models
 
 import (
 	"time"
-
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/go-sql-driver/mysql" 
+	"github.com/zuoyong8/coins/config"
 	// "github.com/jinzhu/gorm/dialects/mysql"
 	// "github.com/asaskevich/govalidator"
 )
@@ -34,19 +35,22 @@ type Users struct{
 	CreatAt			time.Time
 }
 
-
 var DB *gorm.DB
 
 func InitDB() (*gorm.DB,error) {
-	db, err := gorm.Open("mysql", "root:123456@/test?charset=utf8&parseTime=True&loc=Local")
-	if err == nil {
-		DB = db
-		db.LogMode(true)
-		DB.AutoMigrate(&Coins{})
-		DB.AutoMigrate(&Users{})
-		return db, err
+	dbInfo,err := config.GetDbConectInfo()
+	if err == nil{
+		str := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",dbInfo.Username,dbInfo.Password,dbInfo.Dbname)
+		db, err := gorm.Open("mysql", str)
+		if err == nil {
+			DB = db
+			db.LogMode(true)
+			DB.AutoMigrate(&Coins{})
+			DB.AutoMigrate(&Users{})
+			return db, err
+		}
 	}
-	return db,err
+	return nil,err
 }
 
 

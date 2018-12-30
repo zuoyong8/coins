@@ -1,0 +1,17 @@
+[btc]
+ip = "192.168.0.185"
+port = 8334
+rpcusername = "sjyy"
+rpcpassword = "Sjyy2018"
+[usdt]
+ip = "192.168.0.185"
+port = 8334
+rpcusername = "sjyy"
+rpcpassword = "Sjyy2018"
+[mysql]
+host = "127.0.0.1"
+port = 3306
+username =  "root"
+password = "123456"
+dbname = "test"
+

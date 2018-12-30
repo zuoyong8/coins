@@ -29,7 +29,7 @@ type CallFunc struct{
 }
 
 func New(method string,params []interface{})(*CallFunc,error){
-	ethRpcInfo,err := config.GetRpcInfo("eth")
+	ethRpcInfo,err := config.GetCoinRpc("eth")
 	if err != nil {
 		return nil,err
 	}
