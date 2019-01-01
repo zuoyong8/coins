@@ -20,7 +20,6 @@ func ListTransactions()([]TransInfo,error){
 	return ts,nil
 }
 
-
 //获取所有事务
 func ListSinceBlock(blockHash string,targetConfirmations string)(SinceBlockInfo,error){
 	params := make([]interface{},2)
@@ -42,7 +41,6 @@ func ListSinceBlock(blockHash string,targetConfirmations string)(SinceBlockInfo,
 	}
 	return sbInfo,nil
 }
-
 
 //返回有关比特币地址的信息。
 func ValidateAddress(address string)(AddressInfo,error){
@@ -141,7 +139,6 @@ func GetConnectionCount()int32{
 	return connectionCount
 }
 
-
 //返回用于接收付款的新比特币地址
 func GetNewaAddress()(string,error){
 	callFunc := New("getnewaddress",nil)
@@ -186,7 +183,6 @@ func GetBalance()(float64,error){
 	}
 	return balance,nil
 }
-
 
 //根据块哈希获取块相关信息
 func GetBlock(hash string)(BlockInfo,error){
@@ -252,7 +248,6 @@ func GetBestBlockHash()(string,error){
 	return bestBlockHash,nil
 }
 
-
 //返回最长块链中的块数。
 func GetBlockCount()(int64,error){
 	callFunc := New("getblockcount",nil)
@@ -267,7 +262,6 @@ func GetBlockCount()(int64,error){
 	}
 	return blockCount,nil
 }
-
 
 //返回用于接收此帐户付款的当前比特币地址。如果<account>不存在，它将与将返回的相关新地址一起创建
 func GetAccountAddress(account string)(string,error){
@@ -285,7 +279,6 @@ func GetAccountAddress(account string)(string,error){
 	}
 	return accountAddress,nil
 }
-
 
 //发送
 func SendFrom(info SendInfo)(string,error){
@@ -324,7 +317,6 @@ func SendToAddress(info SendInfo)(string,error){
 	return txid,nil
 }	
 
-
 //从当前钱包转账至多个地址
 func SendMany(smInfo *SendManyInfo){
 	params := make([]interface{},2)
@@ -332,7 +324,6 @@ func SendMany(smInfo *SendManyInfo){
 	params[1] = smInfo.SendsInfo
 	// callFunc := New("sendmany",params)
 }
-
 
 //从一个帐户移动另一个钱包帐户
 func Move(info *MoveInfo)(bool,error){
@@ -353,7 +344,6 @@ func Move(info *MoveInfo)(bool,error){
 	}
 	return status,nil
 }
-
 
 //设置与给定地址关联的帐户。分配已分配给同一帐户的地址将创建与该帐户关联的新地址
 func SetAccount(bitcoinAddress string,account string)string{
@@ -417,7 +407,6 @@ func DumpWallet(filename string){
 	}
 }
 
-
 ////////----UTXO-------//////////
 /////////////////////////////////
 //返回钱包中未使用的事务输出数组
@@ -438,7 +427,6 @@ func ListUnspent(info *UnspentInfo)([]UnSpentInfo,error){
 	}
 	return usInfo,nil
 }
-
 
 //创建待发送交易
 func CreateRawTransaction(info RawTransactionInfo)(string,error){

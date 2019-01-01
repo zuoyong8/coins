@@ -37,14 +37,11 @@ type Users struct{
 	CreatAt			time.Time
 }
 
-const (
-	EMAIL_VALID_REGEX = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+"
-	PHONE_VALID__REGEX = "^(13[0-9]|14[57]|15[0-35-9]|18[07-9])\\d{8}$"
-)
 
 var DB *gorm.DB
 
 func InitDB() (*gorm.DB,error) {
+	config.SetViperConfig()
 	dbInfo,err := config.GetDbConectInfo()
 	if err == nil{
 		str := fmt.Sprintf("%s:%s@/%s?charset=utf8&parseTime=True&loc=Local",dbInfo.Username,dbInfo.Password,dbInfo.Dbname)
@@ -63,7 +60,7 @@ func InitDB() (*gorm.DB,error) {
 
 //Users CRUD
 func validEmail(email string) (b bool) {
-	reg := regexp.MustCompile(EMAIL_VALID_REGEX)
+	reg := regexp.MustCompile(config.GetStringValue("validations.email"))
 	return reg.MatchString(email)
 }
 

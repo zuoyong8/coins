@@ -28,10 +28,15 @@ type DbConnectInfo struct{
 	Dbname			string	
 }
 
-const configRoot = "config"
+
+func SetViperConfig(){
+    viper.SetConfigType("toml")
+	viper.AddConfigPath("./config/")
+	viper.SetConfigName("coins")
+}
 
 //获取当前程序运行路径
-func GetCurrRunDir() string{
+func getCurrRunDir() string{
 	dir,err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		return ""
@@ -39,13 +44,11 @@ func GetCurrRunDir() string{
 	return strings.Replace(dir,"\\","/",-1)
 }
 
+func GetStringValue(key string)string{
+	return viper.GetString(key)
+}
 
 func GetDbConectInfo()(*DbConnectInfo,error){
-    viper.SetConfigType("toml")
-	viper.AddConfigPath("./config/")
-	viper.SetConfigName("coins")
-	// viper.SetConfigFile("coins.toml")
-
 	err := viper.ReadInConfig()
 	if err != nil{
 		return nil,err
@@ -60,12 +63,8 @@ func GetDbConectInfo()(*DbConnectInfo,error){
 	return dbInfo,nil
 }
 
-
+//
 func GetCoinRpc(currency string)(*RpcConnectInfo, error){
-    viper.SetConfigType("toml")
-    viper.AddConfigPath("../../config/")
-	viper.SetConfigName("coins")
-
 	err := viper.ReadInConfig()
 	if err != nil{
 		return nil,err
@@ -80,11 +79,10 @@ func GetCoinRpc(currency string)(*RpcConnectInfo, error){
 	return rpcInfo,nil
 }
 
-
+//
 func GetCurrPath() string{
 	return "D:/gits/coins/config/config.json"
 }
-
 
 //根据币种从json配置文件中获取相应rpc信息
 func GetRpcInfo(currency string) (*RpcConnectInfo, error){
