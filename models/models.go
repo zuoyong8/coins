@@ -3,9 +3,11 @@ package models
 import (
 	"time"
 	"fmt"
+	"regexp"
 	"github.com/jinzhu/gorm"
 	_ "github.com/go-sql-driver/mysql" 
 	"github.com/zuoyong8/coins/config"
+	"github.com/qor/validations"
 	// "github.com/jinzhu/gorm/dialects/mysql"
 	// "github.com/asaskevich/govalidator"
 )
@@ -35,6 +37,11 @@ type Users struct{
 	CreatAt			time.Time
 }
 
+const (
+	EMAIL_VALID_REGEX = "^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+"
+	PHONE_VALID__REGEX = "^(13[0-9]|14[57]|15[0-35-9]|18[07-9])\\d{8}$"
+)
+
 var DB *gorm.DB
 
 func InitDB() (*gorm.DB,error) {
@@ -47,14 +54,26 @@ func InitDB() (*gorm.DB,error) {
 			db.LogMode(true)
 			DB.AutoMigrate(&Coins{})
 			DB.AutoMigrate(&Users{})
+			validations.RegisterCallbacks(DB)
 			return db, err
 		}
 	}
 	return nil,err
 }
 
-
 //Users CRUD
+func validEmail(email string) (b bool) {
+	reg := regexp.MustCompile(EMAIL_VALID_REGEX)
+	return reg.MatchString(email)
+}
+
+func (user *Users)Validate(DB *gorm.DB){
+	if !validEmail(user.Username){
+		DB.AddError(validations.NewError(nil,"Username","用户名必须为邮箱"))
+	}
+}
+
+
 func (user *Users) Insert() error {
 	return DB.Create(user).Error
 }
