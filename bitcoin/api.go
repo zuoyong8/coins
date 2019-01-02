@@ -125,18 +125,18 @@ func GetWalletInfo()(WalletInfo,error){
 }
 
 //获取与其他节点的连接数
-func GetConnectionCount()int32{
+func GetConnectionCount()(int32,error){
 	callFunc := New ("getconnectioncount",nil)
 	myBytes,err := callFunc.GetRpcBytes()
 	if err != nil{
-		return 0
+		return 0,err
 	}
 	var connectionCount int32
 	err = json.Unmarshal(myBytes,&connectionCount)
 	if err != nil {
-		return 0
+		return 0,err
 	}
-	return connectionCount
+	return connectionCount,nil
 }
 
 //返回用于接收付款的新比特币地址

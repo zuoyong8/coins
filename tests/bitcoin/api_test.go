@@ -19,7 +19,6 @@ func TestListAccounts(t *testing.T){
 	}
 }
 
-
 func TestValidateAddress(t *testing.T){
 	datas,err := bitcoin.ValidateAddress("1A92GKYakBSETpnAfZG5sVbRsjwxr7k83y")
 	if err!=nil {
@@ -37,7 +36,6 @@ func TestGetBalance(t *testing.T){
 	fmt.Println(balance)
 }
 
-
 func TestGetTransaction(t *testing.T){
 	info,err := bitcoin.GetTransaction("2e5753f438bde120eb01a7cf7656c3d055e77b30eb710e2cd11bfe9a7132750c")
 	if err!=nil{
@@ -47,7 +45,6 @@ func TestGetTransaction(t *testing.T){
 	fmt.Println(info.Hex)
 	//fmt.Println(info.tranDetailsInfo.Amount)
 }
-
 
 func TestListAddressGroupings(t *testing.T){
 	datas,err := bitcoin.ListAddressGroupings()

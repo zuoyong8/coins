@@ -19,7 +19,6 @@ type login struct {
 	Password string `form:"password" json:"password" binding:"required"`
 }
 
-
 func JwtAuth()(*jwt.GinJWTMiddleware, error){
 	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
 		Realm:       "chains_api",
@@ -61,7 +60,8 @@ func JwtAuth()(*jwt.GinJWTMiddleware, error){
 			return nil, jwt.ErrFailedAuthentication
 		},
 		Authorizator: func(data interface{}, c *gin.Context) bool {
-			if v, ok := data.(*User); ok && v.UserName == "admin" {
+			jwtClaims := jwt.ExtractClaims(c)
+			if v, ok := data.(*User); ok && v.UserName == jwtClaims["id"].(string)  {
 				return true
 			}
 			return false

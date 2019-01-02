@@ -58,7 +58,6 @@ func GetNewAddress(c *gin.Context){
 	}
 }
 
-
 func GetBlockCount(c *gin.Context){
 	blockCount,err := bitcoin.GetBlockCount()
 	if err!=nil{
@@ -70,6 +69,21 @@ func GetBlockCount(c *gin.Context){
 		c.JSON(200, gin.H{
 			"status":  "success",
 			"blockcount": blockCount,
+		})
+	}
+}
+
+func GetConnectionCount(c *gin.Context){
+	connectionCount,err := bitcoin.GetConnectionCount()
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status":  "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status":  "success",
+			"blockcount": connectionCount,
 		})
 	}
 }
@@ -89,7 +103,6 @@ func ListAccounts(c *gin.Context){
 	}
 }
 
-
 func ListTransactions(c *gin.Context){
 	transactions,err := bitcoin.ListTransactions()
 	if err!=nil{
@@ -104,7 +117,6 @@ func ListTransactions(c *gin.Context){
 		})
 	}
 }
-
 
 func ListAddressGroupings(c *gin.Context){
 	addressGroupings,err := bitcoin.ListAddressGroupings()
@@ -136,7 +148,6 @@ func GetTransaction(c *gin.Context){
 		})
 	}
 }
-
 
 func DumpPrivkey(c *gin.Context){
 	address := c.Param("address")

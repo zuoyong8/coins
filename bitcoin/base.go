@@ -19,7 +19,7 @@ func New(method string,params []interface{}) *CallFunc{
 	return &api
 }
 
-
+//
 func (cf *CallFunc) GetJosnBytes()([]byte){
 	coinName := cf.method[:3]
 	if (strings.Compare(coinName,"omn")==0){
@@ -39,7 +39,6 @@ func (cf *CallFunc) GetJosnBytes()([]byte){
 	}
 	return bytes
 }
-
 
 //
 func (cf *CallFunc) GetRpcBytes()([]byte,error){
