@@ -4,6 +4,10 @@ port = 8334
 rpcusername = "sjyy"
 rpcpassword = "Sjyy2018"
 
+[eth]
+ip = "10.99.22.139"
+port = 8541
+
 [usdt]
 ip = "192.168.0.185"
 port = 8334

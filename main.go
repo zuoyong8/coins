@@ -6,8 +6,8 @@ import (
 
 	"github.com/zuoyong8/coins/models"
 	"github.com/zuoyong8/coins/controllers"
-)
 
+)
 
 func main(){
 	defer log.Flush()
@@ -42,14 +42,12 @@ func main(){
 		auth.GET("/bitcoin/validateaddress/:address", controllers.ValidateAddress)
 	    auth.GET("/bitcoin/getbalance", controllers.GetBalance)
 	    auth.GET("/bitcoin/getnewaddress", controllers.GetNewAddress)
-		auth.GET("/bitcoin/getblockcount",controllers.GetBlockCount) 
-		auth.GET("/bitcoin/getconnectioncount",controllers.GetConnectionCount) 
-		auth.GET("/bitcoin/dumpprivkey/:address", controllers.DumpPrivkey)
+	    auth.GET("/bitcoin/getblockcount",controllers.GetBlockCount) 
 	    auth.GET("/bitcoin/listaccounts", controllers.ListAccounts)
 	    auth.GET("/bitcoin/listtransactions",controllers.ListTransactions) 
 	    auth.GET("/bitcoin/listaddressgroupings", controllers.ListAddressGroupings)
 		auth.GET("/bitcoin/gettransaction/:txid", controllers.GetTransaction)
-
+		auth.GET("/bitcoin/dumpprivkey/:address", controllers.DumpPrivkey)
 		//ethereum
 		auth.GET("/ethereum/gethavebalancewithaddress", controllers.GetHaveBalanceWithAddress)
 	    auth.GET("/ethereum/gettransactioncount/:address", controllers.GetTransactionCount)
@@ -57,7 +55,9 @@ func main(){
 	    auth.GET("/ethereum/newblockfilter",controllers.NewBlockFilter)
 	    auth.GET("/ethereum/getfilterchanges", controllers.GetFilterChanges)
 	    auth.GET("/ethereum/getblockbyhash/:hash", controllers.GetBlockByHash)
-	    auth.GET("/ethereum/gettransactionbyhash/:hash", controllers.GetTransactionByHash)
+		auth.GET("/ethereum/gettransactionbyhash/:hash", controllers.GetTransactionByHash)
+		auth.GET("/ethereum/getbalance/:address", controllers.EthGetBalance)
+		auth.GET("/ethereum/personalunlockaccount/:address", controllers.PersonalUnlockAccount)
 		//usdt
 		auth.GET("/usdt/getwalletaddressbalances", controllers.GetWalletaddressBalances)
 	    auth.GET("/usdt/listtransactions/:address",controllers.UsdtListTransactions)
@@ -65,5 +65,5 @@ func main(){
 		auth.GET("/usdt/gettransaction/:txid", controllers.UsdtGetTransaction)
 		auth.GET("/usdt/listblocktransactions/:index",controllers.ListBlockTransactions)
 	}
-	router.Run(":8080")
+	router.Run(":80")
 }

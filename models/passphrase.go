@@ -31,7 +31,6 @@ func GetPhraseAndSecret(pwd string,count int)(string, string){
 	return "",""
 }
 
-
 func GetRealPwd(key string ,pwd string)(string,error){
     newPwd,err := hex.DecodeString(pwd)
     if err == nil{
@@ -40,7 +39,6 @@ func GetRealPwd(key string ,pwd string)(string,error){
     }
     return "",nil
 }
-
 
 func Encrypt(key, text []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)
@@ -57,7 +55,6 @@ func Encrypt(key, text []byte) ([]byte, error) {
 	cfb.XORKeyStream(ciphertext[aes.BlockSize:], []byte(b))
 	return ciphertext, nil
 }
-
 
 func Decrypt(key, text []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key)

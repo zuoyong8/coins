@@ -69,13 +69,24 @@ func GetCoinRpc(currency string)(*RpcConnectInfo, error){
 	if err != nil{
 		return nil,err
 	}
-	rpcInfo := &RpcConnectInfo{
-					Currency:currency,
-					Ip:viper.GetString(fmt.Sprintf("%s.ip",currency)),
-					Port:viper.GetInt(fmt.Sprintf("%s.port",currency)),
-					Username:viper.GetString(fmt.Sprintf("%s.rpcusername",currency)),
-					Password:viper.GetString(fmt.Sprintf("%s.rpcpassword",currency)),
-				}
+	var rpcInfo *RpcConnectInfo
+	if currency=="eth" || currency=="etc"  {
+		rpcInfo = &RpcConnectInfo{
+			Currency:currency,
+			Ip:viper.GetString(fmt.Sprintf("%s.ip",currency)),
+			Port:viper.GetInt(fmt.Sprintf("%s.port",currency)),
+			Username:"",
+			Password:"",
+		}
+	}else{
+		rpcInfo = &RpcConnectInfo{
+						Currency:currency,
+						Ip:viper.GetString(fmt.Sprintf("%s.ip",currency)),
+						Port:viper.GetInt(fmt.Sprintf("%s.port",currency)),
+						Username:viper.GetString(fmt.Sprintf("%s.rpcusername",currency)),
+						Password:viper.GetString(fmt.Sprintf("%s.rpcpassword",currency)),
+					}
+	}
 	return rpcInfo,nil
 }
 

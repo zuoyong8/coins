@@ -6,9 +6,20 @@ import (
 	"math"
 )
 
+//十六转进制十进制
+func HexToUint64(hex string)uint64{
+	val := hex[2:]
+    
+    n, err := strconv.ParseUint(val, 32, 64)
+    if err != nil {
+        return 0
+    }
+    return uint64(n)
+}
 
 //十六转进制十进制
-func HexDec(h string) (n int64) {
+//0x56bc569a7b2afe957
+func HexDec(h string)int64 {
 	if h[:2]=="0x"{
 		h = h[2:] 
 	}

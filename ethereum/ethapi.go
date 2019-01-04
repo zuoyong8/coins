@@ -18,7 +18,6 @@ func GetAccouts()([]string,error){
 	return result,nil
 }
 
-
 //获取当前节点eth总数量
 func GetBalanceAmount()(common.Decimal,error){
 	result,err :=  GetHaveBalanceWithAddress()
@@ -31,7 +30,6 @@ func GetBalanceAmount()(common.Decimal,error){
 	}
 	return amount,nil
 }
-
 
 //获取钱包有eth的地址
 func GetHaveBalanceWithAddress()([]BalanceInfo,error){
@@ -54,7 +52,6 @@ func GetHaveBalanceWithAddress()([]BalanceInfo,error){
 	}
 	return bInfo,nil
 }
-
 
 //从钱包里地址获取eth数量
 func GetBalance(address string)(string,error){
@@ -88,7 +85,6 @@ func GetGasPrice()(string,error){
 	return gasPrice,nil
 }
 
-
 //生成并返回允许事务完成所需的气体估计值
 func GetEstimateGas(fromAddress string,toAddress string)(string,error){
 	Params := make(map[string]interface{},2)
@@ -106,7 +102,6 @@ func GetEstimateGas(fromAddress string,toAddress string)(string,error){
 	return estimateGas,nil
 }
 
-
 //获取区块同步状态
 func GetSyning()(bool,error){
 	callFunc,err := New("eth_syncing",nil)
@@ -120,7 +115,6 @@ func GetSyning()(bool,error){
 	}
 	return status,nil
 }
-
 
 //获取当前节点同步的最新区块高度
 func GetBlockNumber()(string,error){
@@ -187,6 +181,23 @@ func GetTransactionByHash(dataHash string)(TransactionByHashInfo,error){
 	return tranInfo,nil
 }
 
+//解锁账号
+func PersonalUnlockAccount(address string)(bool,error){
+	Params := make([]interface{},3)
+	Params[0] = address
+	Params[1] = "PASSWORD"
+	Params[2] = 30
+	callFunc,err := New("personal_unlockAccount",Params)
+	var isOk bool
+	if err != nil {
+		return false,err
+	}
+	err = callFunc.EthClient.Call(&isOk,callFunc.Method,Params[0],Params[1],Params[2])
+	if err != nil{
+		return false,err
+	}
+	return isOk,nil
+}
 
 //在节点中创建一个过滤器，以便当新块生成时进行通知
 func NewBlockFilter()(string,error){

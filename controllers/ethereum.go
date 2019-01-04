@@ -8,7 +8,6 @@ import(
 	"github.com/zuoyong8/coins/common"
 )
 
-
 func GetHaveBalanceWithAddress(c *gin.Context){
 	balances,err := ethereum.GetHaveBalanceWithAddress()
 	if err!=nil{
@@ -20,6 +19,22 @@ func GetHaveBalanceWithAddress(c *gin.Context){
 		c.JSON(200, gin.H{
 			"status":  "success",
 			"balances": balances,
+		})
+	}
+}
+
+func EthGetBalance(c *gin.Context){
+	address := c.Param("address")
+	balance,err := ethereum.GetBalance(address)
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status":  "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status":  "success",
+			"balances": balance,
 		})
 	}
 }
@@ -115,6 +130,22 @@ func GetBlockByHash(c *gin.Context){
 func GetTransactionByHash(c *gin.Context){
 	hash := c.Param("hash")
 	result,err := ethereum.GetTransactionByHash(hash)
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status":  "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status":  "success",
+			"result":result,
+		})
+	}
+}
+
+func PersonalUnlockAccount(c *gin.Context){
+	address := c.Param("address")
+	result,err := ethereum.PersonalUnlockAccount(address)
 	if err!=nil{
 		c.JSON(500, gin.H{
 			"status":  "failure",
