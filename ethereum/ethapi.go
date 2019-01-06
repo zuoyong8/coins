@@ -5,12 +5,20 @@ import (
 )
 
 //geth
+//https://ethfans.org/posts/ethereum-token-standards-list-1
 //datadir  		--- 设置当前区块链网络数据存放的位置
 //nodiscover	--- 私有链地址
 //console		--- 启动命令行模式，可以在Geth中执行命令
 //identity		--- 区块链的标示，用于标示目前网络的名字
 //rpc			--- 开启rpc通道
 //rpcapi 		--- 要开放哪些rpc api(db,eth,net,web3,personal)
+	// eth：包含一些跟操作区块链相关的方法
+	// net：包含以下查看p2p网络状态的方法
+	// admin：包含一些与管理节点相关的方法
+	// miner：包含启动&停止挖矿的一些方法
+	// personal：主要包含一些管理账户的方法
+	// txpool：包含一些查看交易内存池的方法
+	// web3：包含了以上对象，还包含一些单位换算的方法
 //rpccorsdomain --- 允许能连接到你的节点执行rpc api的url，使用逗号分隔。*表示任何url都可以连接
 //rpcaddr		--- HTTP-RPC服务器接口地址，默认为localhost
 //rpcport       --- HTTP-RPC服务器端口地址，默认为8545
@@ -180,6 +188,7 @@ func GetTransactionCount(data string)(string,error){
 //value：由于是发送代币，这里为0
 //data：附加的消息。这里由合约中transfer方法，方法参数一(接收方地址)，方法参数二(代币数量)的十六进制组成
 //data值应该为方法名的sha3的前8个字节+参数的64字节，不够前面补充为0。
+//web3.sha3("transfer(address,uint256)")
 //"data": "0xa9059cbb000000000000000000000000696d69b81c6bdf6d46ddb66ee2175df7f9de7c4600000000000000000000000000000000000000000000000ad78ebc5ac6200000"
 func SendTransaction(info TransactionInfo)(string,error){
 	gasPrice,err := GetGasPrice()
@@ -210,6 +219,7 @@ func SendTransaction(info TransactionInfo)(string,error){
 }
 
 //获取指定地址代币余额--要调用的方法名balanceOf和指定地址的十六进制
+//balanceOf(address _owner)
 //获取代币小数位--要调用的方法名decimals的十六进制
 // HEX String - 指定区块号的十六进制
 // String "earliest" - 表示最初或创世区块号
