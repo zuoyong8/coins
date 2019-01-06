@@ -127,6 +127,22 @@ func GetBlockByHash(c *gin.Context){
 	}
 }
 
+func GetBlockByNumber(c *gin.Context){
+	hash := c.Param("hash")
+	result,err := ethereum.GetBlockByNumber(hash)
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status":  "failure",
+			"err": err,
+	   })
+	}else{
+		c.JSON(200, gin.H{
+			"status":  "success",
+			"result":result,
+		})
+	}
+}
+
 func GetTransactionByHash(c *gin.Context){
 	hash := c.Param("hash")
 	result,err := ethereum.GetTransactionByHash(hash)

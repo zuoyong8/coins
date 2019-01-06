@@ -27,7 +27,6 @@ type BlockByHashInfo struct{
 	Uncles		[]string	`json:"uncles"`
 }
 
-
 type TransactionByHashInfo struct {
 	Hash 				string 		`json:"hash"`
 	Nonce				string 		 `json:"nonce"`
@@ -51,4 +50,23 @@ type FilterChangeInfo struct{
 	Address				string		`json:"address"`
 	Data				string		`json:"data"`
 	Topics				[]string	`json:"topics"`
+}
+
+type TransactionReceiptInfo struct{
+	TransactionHash		string 		`json:"transactionHash"`
+	TransactionIndex	string		`json:"transactionIndex"`
+	BlockNumber			string		`json:"blockNumber"`
+	BlockHash			string		`json:"blockHash"`
+	CumulativeGasUsed   string		`json:"cumulativeGasUsed"`
+	GasUsed				string 		`json:"gasUsed"`
+	ContractAddress		string		`json:"contractAddress"`
+	Logs				[]interface{}	`json:"logs"`
+	LogsBloom			string		`json:"logsBloom"`
+	Status				string 		`json:"status"`
+}
+
+type WalletInfo struct{
+	Url 				string 		`json:"url"`
+	Status				string 		`json:"status"`
+	Accounts			map[string]interface{} `json:"accounts"`
 }

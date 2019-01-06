@@ -56,6 +56,7 @@ func main(){
 	    auth.GET("/ethereum/getfilterchanges", controllers.GetFilterChanges)
 	    auth.GET("/ethereum/getblockbyhash/:hash", controllers.GetBlockByHash)
 		auth.GET("/ethereum/gettransactionbyhash/:hash", controllers.GetTransactionByHash)
+		auth.GET("/ethereum/getblockbynumber/:hash", controllers.GetBlockByNumber)
 		auth.GET("/ethereum/getbalance/:address", controllers.EthGetBalance)
 		auth.GET("/ethereum/personalunlockaccount/:address", controllers.PersonalUnlockAccount)
 		//usdt
@@ -65,5 +66,5 @@ func main(){
 		auth.GET("/usdt/gettransaction/:txid", controllers.UsdtGetTransaction)
 		auth.GET("/usdt/listblocktransactions/:index",controllers.ListBlockTransactions)
 	}
-	router.Run(":80")
+	router.Run(":9999")
 }

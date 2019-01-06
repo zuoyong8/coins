@@ -4,6 +4,32 @@ import (
 	"github.com/zuoyong8/coins/common"
 )
 
+//geth
+//datadir  		--- 设置当前区块链网络数据存放的位置
+//nodiscover	--- 私有链地址
+//console		--- 启动命令行模式，可以在Geth中执行命令
+//identity		--- 区块链的标示，用于标示目前网络的名字
+//rpc			--- 开启rpc通道
+//rpcapi 		--- 要开放哪些rpc api(db,eth,net,web3,personal)
+//rpccorsdomain --- 允许能连接到你的节点执行rpc api的url，使用逗号分隔。*表示任何url都可以连接
+//rpcaddr		--- HTTP-RPC服务器接口地址，默认为localhost
+//rpcport       --- HTTP-RPC服务器端口地址，默认为8545
+//networkid		--- 网络标识，私有链取一个大于4的随意的值
+
+//
+func Coinbase()(string,error){
+	callFunc,err := New("eth_coinbase",nil)
+	if err != nil{
+		return "",err
+	}
+	var result string
+	err = callFunc.EthClient.Call(&result,callFunc.Method)
+	if err!=nil{
+		return "",err
+	}
+	return result,nil
+}
+
 //获取当前钱包内所有地址
 func GetAccouts()([]string,error){
 	callFunc,err := New("eth_accounts",nil)
@@ -148,6 +174,81 @@ func GetTransactionCount(data string)(string,error){
 	return result,nil
 }
 
+
+//发送交易
+//代币转账token_transfer
+//value：由于是发送代币，这里为0
+//data：附加的消息。这里由合约中transfer方法，方法参数一(接收方地址)，方法参数二(代币数量)的十六进制组成
+//data值应该为方法名的sha3的前8个字节+参数的64字节，不够前面补充为0。
+//"data": "0xa9059cbb000000000000000000000000696d69b81c6bdf6d46ddb66ee2175df7f9de7c4600000000000000000000000000000000000000000000000ad78ebc5ac6200000"
+func SendTransaction(info TransactionInfo)(string,error){
+	gasPrice,err := GetGasPrice()
+	gasLimit,err1 := GetEstimateGas(info.From,info.To)
+	if err!=nil{
+		return "",err
+	}
+	if err!=nil{
+		return "",err1
+	}
+	Params := make([]interface{},5)
+	Params[0] = info.From
+	Params[1] = info.To
+	Params[2] = gasLimit
+	Params[3] = gasPrice
+	Params[4] = info.Value
+	Params[5] = info.Data
+	callFunc,err := New("eth_sendTransaction",Params)
+	var txHtash string
+	if err != nil {
+		return "",err
+	}
+	err = callFunc.EthClient.Call(&txHtash,callFunc.Method,Params[0],Params[1],Params[2],Params[3],Params[4],Params[5])
+	if err != nil{
+		return "",err
+	}
+	return txHtash,nil
+}
+
+//获取指定地址代币余额--要调用的方法名balanceOf和指定地址的十六进制
+//获取代币小数位--要调用的方法名decimals的十六进制
+// HEX String - 指定区块号的十六进制
+// String "earliest" - 表示最初或创世区块号
+// String "latest" - 表示最新挖出的区块号
+// String "pending" - 表示pending状态的交易
+func EthCall(to string,data string)(string,error){
+	Params := make([]interface{},3)
+	Params[0] = to
+	Params[1] = data
+	Params[2] = "latest"
+	callFunc,err := New("eth_call",Params)
+	var result string
+	if err != nil {
+		return "",err
+	}
+	err = callFunc.EthClient.Call(&result,callFunc.Method,Params[0],Params[1],Params[2])
+	if err != nil{
+		return "",err
+	}
+	return result,nil
+}
+
+//获取指定高度的区块详情
+func GetBlockByNumber(dataHash string)(BlockByHashInfo,error){
+	Params := make([]interface{},2)
+	Params[0] = dataHash
+	Params[1] = true
+	callFunc,err := New("eth_getBlockByNumber",Params)
+	var info BlockByHashInfo
+	if err != nil {
+		return info,err
+	}
+	err = callFunc.EthClient.Call(&info,callFunc.Method,Params[0],Params[1])
+	if err != nil{
+		return info,err
+	}
+	return info,nil
+}
+
 //返回具有指定哈希的块
 func GetBlockByHash(dataHash string)(BlockByHashInfo,error){
 	Params := make([]interface{},2)
@@ -181,6 +282,49 @@ func GetTransactionByHash(dataHash string)(TransactionByHashInfo,error){
 	return tranInfo,nil
 }
 
+//开启挖矿
+func MinerStart()error{
+	callFunc,err := New("miner_start ",nil)
+	if err != nil {
+		return err
+	}
+	var result string
+	err = callFunc.EthClient.Call(&result,callFunc.Method)
+	if err != nil{
+		return err
+	}
+	return nil
+}
+
+//停止挖矿
+func MinerStop()error{
+	callFunc,err := New("miner_stop ",nil)
+	if err != nil {
+		return err
+	}
+	var result string
+	err = callFunc.EthClient.Call(&result,callFunc.Method)
+	if err != nil{
+		return err
+	}
+	return nil
+}
+
+////personal钱包方法
+//创建账户
+func PersonalNewAccount()(string,error){
+	callFunc,err := New("personal_newAccount",nil)
+	if err != nil {
+		return "",err
+	}
+	var newAddress string
+	err = callFunc.EthClient.Call(&newAddress,callFunc.Method)
+	if err != nil{
+		return "",err
+	}
+	return newAddress,nil
+}
+
 //解锁账号
 func PersonalUnlockAccount(address string)(bool,error){
 	Params := make([]interface{},3)
@@ -197,6 +341,52 @@ func PersonalUnlockAccount(address string)(bool,error){
 		return false,err
 	}
 	return isOk,nil
+}
+
+//获取所有本地账户地址
+func PersonalListAccounts()([]string,error){
+	callFunc,err := New("personal_listAccounts ",nil)
+	var addresses []string
+	if err != nil {
+		return nil,err
+	}
+	err = callFunc.EthClient.Call(&addresses,callFunc.Method)
+	if err != nil{
+		return nil,err
+	}
+	return addresses,nil
+}
+
+// 获取所有本地钱包信息
+func PersonalListWallets()([]WalletInfo,error){
+	callFunc,err := New("personal_listWallets  ",nil)
+	var walletInfos []WalletInfo
+	if err != nil {
+		return nil,err
+	}
+	err = callFunc.EthClient.Call(&walletInfos,callFunc.Method)
+	if err != nil{
+		return nil,err
+	}
+	return walletInfos,nil
+}
+
+//通过私钥和密码导入keystore文件
+//返回账户地址
+func PersonalImportRawKey(privateKey string,password string)(string,error){
+	Params := make([]interface{},2)
+	Params[0] = privateKey
+	Params[1] = password
+	callFunc,err := New("personal_importRawKey",Params)
+	var result string
+	if err != nil {
+		return "",err
+	}
+	err = callFunc.EthClient.Call(&result,callFunc.Method,Params[0],Params[1])
+	if err != nil{
+		return "",err
+	}
+	return result,nil
 }
 
 //在节点中创建一个过滤器，以便当新块生成时进行通知
