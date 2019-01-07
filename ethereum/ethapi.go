@@ -5,6 +5,7 @@ import (
 )
 
 //geth
+//go get github.com/miguelmota/go-solidity-sha3
 //https://ethfans.org/posts/ethereum-token-standards-list-1
 //datadir  		--- 设置当前区块链网络数据存放的位置
 //nodiscover	--- 私有链地址
@@ -23,6 +24,55 @@ import (
 //rpcaddr		--- HTTP-RPC服务器接口地址，默认为localhost
 //rpcport       --- HTTP-RPC服务器端口地址，默认为8545
 //networkid		--- 网络标识，私有链取一个大于4的随意的值
+
+//"1": Ethereum Mainnet
+// "2": Morden Testnet (deprecated)
+// "3": Ropsten Testnet
+// "4": Rinkeby Testnet
+// "42": Kovan Testnet
+func NetVersion()(string,error){
+	callFunc,err := New("net_version",nil)
+	if err != nil{
+		return "",err
+	}
+	var result string
+	err = callFunc.EthClient.Call(&result,callFunc.Method)
+	if err!=nil{
+		return "",err
+	}
+	return result,nil
+}
+
+//
+func Web3ClientVersion()(string,error){
+	callFunc,err := New("web3_clientVersion",nil)
+	if err != nil{
+		return "",err
+	}
+	var result string
+	err = callFunc.EthClient.Call(&result,callFunc.Method)
+	if err!=nil{
+		return "",err
+	}
+	return result,nil
+}
+
+//Returns Keccak-256 (not the standardized SHA3-256) of the given data
+func Web3Sha3(value string)(string,error){
+	Params := make([]interface{},1)
+	Params[0] = value
+	callFunc,err := New("web3_sha3",Params)
+	if err != nil {
+		return "",err
+	}
+	
+	var result string
+	err = callFunc.EthClient.Call(&result,callFunc.Method,Params[0])
+	if err != nil{
+		return "",err
+	}
+	return result,nil
+}
 
 //
 func Coinbase()(string,error){
@@ -75,7 +125,7 @@ func GetHaveBalanceWithAddress()([]BalanceInfo,error){
 	for i := range accounts {
 		b,err := GetBalance(accounts[i])
 		if err==nil{
-			balance := common.HexDec(b)
+			balance := common.HexToDecimal(b)
 			if balance >0 {
 				d := common.New(balance,Ether)
 				ethBalance := d.Rescale(Ether)
@@ -181,7 +231,6 @@ func GetTransactionCount(data string)(string,error){
 	}
 	return result,nil
 }
-
 
 //发送交易
 //代币转账token_transfer
@@ -323,12 +372,14 @@ func MinerStop()error{
 ////personal钱包方法
 //创建账户
 func PersonalNewAccount()(string,error){
-	callFunc,err := New("personal_newAccount",nil)
+	Params := make([]interface{},1)
+	Params[0] = "power180"
+	callFunc,err := New("personal_newAccount",Params)
 	if err != nil {
 		return "",err
 	}
 	var newAddress string
-	err = callFunc.EthClient.Call(&newAddress,callFunc.Method)
+	err = callFunc.EthClient.Call(&newAddress,callFunc.Method,Params[0])
 	if err != nil{
 		return "",err
 	}
@@ -354,6 +405,7 @@ func PersonalUnlockAccount(address string)(bool,error){
 }
 
 //获取所有本地账户地址
+//1.6版本已经移除
 func PersonalListAccounts()([]string,error){
 	callFunc,err := New("personal_listAccounts ",nil)
 	var addresses []string
@@ -367,9 +419,9 @@ func PersonalListAccounts()([]string,error){
 	return addresses,nil
 }
 
-// 获取所有本地钱包信息
+//获取所有本地钱包信息
 func PersonalListWallets()([]WalletInfo,error){
-	callFunc,err := New("personal_listWallets  ",nil)
+	callFunc,err := New("personal_listWallets",nil)
 	var walletInfos []WalletInfo
 	if err != nil {
 		return nil,err
@@ -435,9 +487,4 @@ func GetFilterChanges(filterType FilterType,filterCode string)([]interface{},err
 	}
 	return nil,nil
 }
-
-//发送
-// func SendTransaction(fromAddress string, toAddress string, ether float64 )(txid string ,error){
-// 	Params 
-// }
 

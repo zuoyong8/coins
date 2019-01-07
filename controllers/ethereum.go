@@ -2,22 +2,155 @@ package controllers
 
 import(
 	"strconv"
+	"encoding/hex"
 	"github.com/gin-gonic/gin"
+	// "math/big"
+	solsha3 "github.com/miguelmota/go-solidity-sha3"
 
 	"github.com/zuoyong8/coins/ethereum"
 	"github.com/zuoyong8/coins/common"
 )
 
-func GetHaveBalanceWithAddress(c *gin.Context){
-	balances,err := ethereum.GetHaveBalanceWithAddress()
+func GetCoinbaseAddress(c *gin.Context){
+	address,err := ethereum.Coinbase()
 	if err!=nil{
 		c.JSON(500, gin.H{
-			"status":  "failure",
+			"status": "failure",
 			"err": err,
 		})
 	}else{
 		c.JSON(200, gin.H{
-			"status":  "success",
+			"status": "success",
+			"balances": address,
+		})
+	}
+}
+
+func GetAccouts(c *gin.Context){
+	accouts,err := ethereum.GetAccouts()
+	if err != nil{
+		c.JSON(500, gin.H{
+			"status": "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status": "success",
+			"accouts": accouts,
+		})
+	}
+}
+
+func EthCall(c *gin.Context){
+	address := "0x230eaaf5812f6833990bc0f39085527946a043fe"
+	f := solsha3.SoliditySHA3(
+		solsha3.String("balanceOf"))
+	fc := "0x"+(hex.EncodeToString(f)[:8])
+	a := hex.EncodeToString(solsha3.SoliditySHA3(solsha3.Address("0x230eaaf5812f6833990bc0f39085527946a043fe")))
+	result,err := ethereum.EthCall(address,fc+a)
+	if err != nil{
+		c.JSON(500, gin.H{
+			"status": "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status": "success",
+			"ethcall": result,
+		})
+	}
+}
+
+func GetBlockNumber(c *gin.Context){
+	blocknumber,err := ethereum.GetBlockNumber()
+	if err != nil{
+		c.JSON(500, gin.H{
+			"status": "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status": "success",
+			"blocknumber": common.HexToDecimal(blocknumber),
+		})
+	}
+}
+
+func NetVersion(c *gin.Context){
+	vesion,err := ethereum.NetVersion()
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status": "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status": "success",
+			"netversion": vesion,
+		})
+	}
+}
+
+func Web3ClientVersion(c *gin.Context){
+	vesion,err := ethereum.Web3ClientVersion()
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status": "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status": "success",
+			"web3_clientversion": vesion,
+		})
+	}
+}
+
+func GetSyning(c *gin.Context){
+	syning,err := ethereum.GetSyning()
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status": "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status": "success",
+			"syning": syning,
+		})
+	}
+}
+
+func Web3Sha3(c *gin.Context){
+	// data := c.Query("data")
+	// sha3,err := ethereum.Web3Sha3(data)
+	// if err!=nil{
+	// 	c.JSON(500, gin.H{
+	// 		"status": "failure",
+	// 		"err": err,
+	// 	})
+	// }else{
+		hash := solsha3.SoliditySHA3(
+			//solsha3.Address("0x12459c951127e0c374ff9105dda097662a027093"),
+			//solsha3.Uint256(big.NewInt(100)),
+			solsha3.String("transfer"))
+		c.JSON(200, gin.H{
+			"status": "success",
+			"web3sha3": hex.EncodeToString(hash),
+		})
+	// }
+}
+
+func GetHaveBalanceWithAddress(c *gin.Context){
+	balances,err := ethereum.GetHaveBalanceWithAddress()
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status": "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status": "success",
 			"balances": balances,
 		})
 	}
@@ -28,12 +161,12 @@ func EthGetBalance(c *gin.Context){
 	balance,err := ethereum.GetBalance(address)
 	if err!=nil{
 		c.JSON(500, gin.H{
-			"status":  "failure",
+			"status": "failure",
 			"err": err,
 		})
 	}else{
 		c.JSON(200, gin.H{
-			"status":  "success",
+			"status": "success",
 			"balances": balance,
 		})
 	}
@@ -44,13 +177,13 @@ func GetTransactionCount(c *gin.Context){
 	result,err := ethereum.GetTransactionCount(address)
 	if err!=nil{
 		c.JSON(500, gin.H{
-			"status":  "failure",
+			"status": "failure",
 			"err": err,
 		})
 	}else{
 		c.JSON(200, gin.H{
 			"status": "success",
-			"result": result,
+			"transactionCount": result,
 		})
 	}
 }
@@ -59,13 +192,13 @@ func GetGasPrice(c *gin.Context){
 	gasPrice,err := ethereum.GetGasPrice()
 	if err!=nil{
 		c.JSON(500, gin.H{
-			"status":  "failure",
+			"status": "failure",
 			"err": err,
 		})
 	}else{
 		c.JSON(200, gin.H{
-			"status":  "success",
-			"gasprice": common.HexDec(gasPrice),
+			"status": "success",
+			"gasprice": common.HexToDecimal(gasPrice),
 		})
 	}
 }
@@ -74,12 +207,12 @@ func NewBlockFilter(c *gin.Context){
 	filterCode,err := ethereum.NewBlockFilter()
 	if err!=nil{
 		c.JSON(500, gin.H{
-			"status":  "failure",
+			"status": "failure",
 			"err": err,
 		})
 	}else{
 		c.JSON(200, gin.H{
-			"status":  "success",
+			"status": "success",
 			"filtercode": filterCode,
 		})
 	}
@@ -100,12 +233,12 @@ func GetFilterChanges(c *gin.Context){
 	result,err := ethereum.GetFilterChanges(filterType,filterCode)
 	if err!=nil{
 		c.JSON(500, gin.H{
-			"status":  "failure",
+			"status": "failure",
 			"err": err,
 		})
 	}else{
 		c.JSON(200, gin.H{
-			"status":  "success",
+			"status": "success",
 			"result": result,
 		})
 	}
@@ -116,13 +249,13 @@ func GetBlockByHash(c *gin.Context){
 	result,err := ethereum.GetBlockByHash(hash)
 	if err!=nil{
 		c.JSON(500, gin.H{
-			"status":  "failure",
+			"status": "failure",
 			"err": err,
 	   })
 	}else{
 		c.JSON(200, gin.H{
-			"status":  "success",
-			"result":result,
+			"status": "success",
+			"result": result,
 		})
 	}
 }
@@ -132,13 +265,13 @@ func GetBlockByNumber(c *gin.Context){
 	result,err := ethereum.GetBlockByNumber(hash)
 	if err!=nil{
 		c.JSON(500, gin.H{
-			"status":  "failure",
+			"status": "failure",
 			"err": err,
 	   })
 	}else{
 		c.JSON(200, gin.H{
-			"status":  "success",
-			"result":result,
+			"status": "success",
+			"result": result,
 		})
 	}
 }
@@ -148,13 +281,43 @@ func GetTransactionByHash(c *gin.Context){
 	result,err := ethereum.GetTransactionByHash(hash)
 	if err!=nil{
 		c.JSON(500, gin.H{
+			"status": "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status": "success",
+			"result": result,
+		})
+	}
+}
+
+func PersonalNewAccount(c *gin.Context){
+	newAccount,err := ethereum.PersonalNewAccount()
+	if err!=nil{
+		c.JSON(500, gin.H{
 			"status":  "failure",
 			"err": err,
 		})
 	}else{
 		c.JSON(200, gin.H{
 			"status":  "success",
-			"result":result,
+			"newaddress": newAccount,
+		})
+	}
+}
+
+func PersonalListWallets(c *gin.Context){
+	walletsInfo,err := ethereum.PersonalListWallets()
+	if err!=nil{
+		c.JSON(500, gin.H{
+			"status":  "failure",
+			"err": err,
+		})
+	}else{
+		c.JSON(200, gin.H{
+			"status":  "success",
+			"WalletsInfo": walletsInfo,
 		})
 	}
 }
@@ -174,4 +337,3 @@ func PersonalUnlockAccount(c *gin.Context){
 		})
 	}
 }
-
