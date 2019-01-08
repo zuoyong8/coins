@@ -7,7 +7,7 @@ import (
 	myrpc "github.com/zuoyong8/coins/rpc"
 )
 
-	// 
+// 
 type FilterType int
 const(
 	BlockFilter FilterType = iota

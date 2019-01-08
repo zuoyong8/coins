@@ -41,22 +41,24 @@ func GetAccouts(c *gin.Context){
 	}
 }
 
+//func 4 bytes + params 32byte3 不足前面补0
 func EthCall(c *gin.Context){
 	address := "0x230eaaf5812f6833990bc0f39085527946a043fe"
 	f := solsha3.SoliditySHA3(
-		solsha3.String("balanceOf"))
-	fc := "0x"+(hex.EncodeToString(f)[:8])
-	a := hex.EncodeToString(solsha3.SoliditySHA3(solsha3.Address("0x230eaaf5812f6833990bc0f39085527946a043fe")))
+		solsha3.String("double(int256)"))
+	// fc := "0x"+(hex.EncodeToString(f)[:8])
+	fc := "0x70a08231"
+	a := "000000000000000000000000230eaaf5812f6833990bc0f39085527946a043fe"
 	result,err := ethereum.EthCall(address,fc+a)
 	if err != nil{
 		c.JSON(500, gin.H{
 			"status": "failure",
-			"err": err,
+			"err": result,
 		})
 	}else{
 		c.JSON(200, gin.H{
 			"status": "success",
-			"ethcall": result,
+			"ethcall": hex.EncodeToString(f)[:8],
 		})
 	}
 }

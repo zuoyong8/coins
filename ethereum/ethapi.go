@@ -268,6 +268,7 @@ func SendTransaction(info TransactionInfo)(string,error){
 }
 
 //获取指定地址代币余额--要调用的方法名balanceOf和指定地址的十六进制
+//https://solidity.readthedocs.io/en/develop/abi-spec.html ABI规范
 //balanceOf(address _owner)
 //获取代币小数位--要调用的方法名decimals的十六进制
 // HEX String - 指定区块号的十六进制
@@ -275,16 +276,18 @@ func SendTransaction(info TransactionInfo)(string,error){
 // String "latest" - 表示最新挖出的区块号
 // String "pending" - 表示pending状态的交易
 func EthCall(to string,data string)(string,error){
-	Params := make([]interface{},3)
-	Params[0] = to
-	Params[1] = data
-	Params[2] = "latest"
+	Params := make([]interface{},2)
+	datas := make(map[string]interface{})
+	datas["to"] = to
+	datas["data"] = data
+	Params[0] = datas
+	Params[1] = "latest"
 	callFunc,err := New("eth_call",Params)
 	var result string
 	if err != nil {
 		return "",err
 	}
-	err = callFunc.EthClient.Call(&result,callFunc.Method,Params[0],Params[1],Params[2])
+	err = callFunc.EthClient.Call(&result,callFunc.Method,Params[0],Params[1])
 	if err != nil{
 		return "",err
 	}
